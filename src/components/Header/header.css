@@ -57,7 +57,7 @@
 }
 .site-header-nav-desktop a:hover,
 .site-header-nav-mobile a:hover {
-  background: linear-gradient(90deg, #e63946, #f7b733, #39b54a);
+  background: linear-gradient(90deg, #e63946, #d57f45, #39b54a);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -203,4 +203,5 @@
   .site-header-toggle.is-open span:nth-child(3) {
     transform: translateY(-6px) rotate(-45deg);
   }
+ 
 }

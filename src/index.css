@@ -76,6 +76,7 @@ a {
   font-family: inherit;
   color: inherit;
   display: inline-block;
+  font-weight: 400;
 }
 p.eyebrow-head {
   font-family: var(--beyond);
