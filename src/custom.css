@@ -1,5 +1,12 @@
-.hero-banner {
+.hero-scroll-space {
   position: relative;
+  height: 130vh;
+}
+.hero-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
   width: 100%;
   height: 100vh;
   height: 100dvh;
@@ -15,10 +22,10 @@
 .hero-banner-media img {
   display: block;
   position: absolute;
-  top: -10%;
+  top: 0%;
   left: 0;
   width: 100%;
-  height: 120%;
+  height: 105%;
   object-fit: cover;
   will-change: transform;
 }
@@ -38,7 +45,7 @@
   padding: 0 20px;
 }
 .hero-banner-content h1 {
-  font-size: clamp(28px, 4vw, 48px);
+  font-size: clamp(36px, 4vw, 62px);
   letter-spacing: -0.03em;
   line-height: 100%;
 }
@@ -50,10 +57,129 @@
   color: var(--text-brown);
   max-width: 460px;
 }
+.shape-overlays {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: block;
+  pointer-events: none;
+}
 .our-products {
   padding: 100px 0;
+  position: relative;
+  /* shapeGradient3 (the last wave layer) ends at #e7dccb along the hero's
+     bottom edge, which is exactly what touches this section's top edge —
+     so this background CONTINUES from that same color rather than
+     restarting the gradient, keeping the handoff seamless. */
+  background: linear-gradient(
+    180deg,
+    #e7dccb 0%,
+    var(--body-color) 60vh,
+    var(--body-color) 100%
+  );
+}
+.products-scroll-pin {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.products-track {
+  display: flex;
+  gap: 32px;
+  width: max-content;
+  padding: 0 60px;
+  will-change: transform;
+}
+.product-card {
+  flex: 0 0 auto;
+  /* exactly 3 cards fill the viewport width on desktop; the rest are
+     revealed as the pinned section is scrolled through. */
+  width: calc((100vw - 184px) / 3);
+  cursor: default;
+}
+.product-card-media {
+  width: 100%;
+  aspect-ratio: 4 / 3.3;
+  overflow: hidden;
+}
+.product-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.product-card-info {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+}
+.product-card-info::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--head-black);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.product-card:hover .product-card-info::after {
+  transform: scaleX(1);
+}
+.product-card-title {
+  font-family: var(--brico);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--head-black);
+  line-height: 120%;
+}
+.product-card-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(25, 37, 67, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--head-black);
+  flex-shrink: 0;
+}
+.product-card-arrow svg {
+  width: 16px;
+  height: 16px;
 }
 @media screen and (max-width: 767px) {
+  .products-track {
+    padding: 0 20px;
+    gap: 20px;
+  }
+  .product-card {
+    width: 72vw;
+  }
+  .product-card-title {
+    font-size: 17px;
+  }
+  .product-card-arrow {
+    width: 34px;
+    height: 34px;
+  }
+  .product-card-arrow svg {
+    width: 14px;
+    height: 14px;
+  }
+  .hero-scroll-space {
+    height: 110vh;
+  }
   .hero-banner-content {
     top: 5%;
     gap: 14px;

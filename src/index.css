@@ -1,62 +1,19 @@
-/* @font-face {
-  font-family: "Times New Roman";
-  src:
-    url("../public/fonts/TimesNewRomanPSMT.woff2") format("woff2"),
-    url("../public/fonts/TimesNewRomanPSMT.woff") format("woff");
+@font-face {
+  font-family: 'infinity';
+  src: url(../fonts/Beyond Infinity.woff) format('woff');
   font-weight: 400;
+  font-display: swap;
   font-style: normal;
-  font-display: swap;
 }
-@font-face {
-  font-family: "Times New Roman";
-  src:
-    url("../public/fonts/TimesNewRomanPS-ItalicMT.woff2") format("woff2"),
-    url("../public/fonts/TimesNewRomanPS-ItalicMT.woff") format("woff");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Times New Roman";
-  src:
-    url("../public/fonts/TimesNewRomanPS-BoldMT.woff2") format("woff2"),
-    url("../public/fonts/TimesNewRomanPS-BoldMT.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Times New Roman";
-  src:
-    url("../public/fonts/TimesNewRomanPS-BoldItalicMT.woff2") format("woff2"),
-    url("../public/fonts/TimesNewRomanPS-BoldItalicMT.woff2") format("woff");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Cambon";
-  src:
-    url("../public/fonts/Cambon-Medium.woff2") format("woff2"),
-    url("../public/fonts/Cambon-Medium.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-} */
-
 :root {
-  --mono: "DM Mono", monospace;
-  --playwrite: "Playwrite CA", cursive;
+  --beyond: 'infinity';
   --inter: "Inter Tight", sans-serif;
-  --times: "Times New Roman";
-  --cambon: "Cambon";
-  --instrument: "Instrument Sans", sans-serif;
-  --body-color: #f7f0e8;
+  --brico: "Bricolage Grotesque", sans-serif;
+  --body-color: #fefefe;
   --text-brown: #3e2c25;
-  --head-black: #1a1a1a;
+  --head-black: #192543;
   --skyblue: #8fafd9;
-  --pink: #e47c7c;
+  --blue: #101f4c;
   --beige: #efe6dc;
   --tint-white: #f7f0e8;
 }
@@ -91,15 +48,15 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--times);
+  font-family: var(--brico);
   color: var(--head-black);
   line-height: 90%;
-  font-weight: 400;
+  font-weight: 700;
 }
 h2 {
-  font-size: clamp(32px, 6vw, 62px);
+  font-size: clamp(32px, 6vw, 58px);
   letter-spacing: -0.03em;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 100%;
 }
 p {
@@ -107,18 +64,13 @@ p {
   font-size: 18px;
   line-height: 119%;
   letter-spacing: -0.17%;
+  font-weight: 400;
   color: var(--text-brown);
 }
 img {
   display: flex;
 }
-p span.big-pink {
-  font-size: 52px;
-  letter-spacing: -0.17em;
-  font-weight: 400;
-  color: var(--pink);
-  padding-right: 8px;
-}
+
 a {
   cursor: pointer;
   font-family: inherit;
@@ -126,19 +78,19 @@ a {
   display: inline-block;
 }
 p.eyebrow-head {
-  font-family: var(--mono);
+  font-family: var(--beyond);
   letter-spacing: 2px;
-  line-height: 117%;
-  font-size: 20px;
+  line-height: 100%;
+  font-size: 42px;
   font-weight: 500;
-  text-transform: uppercase;
+  color: rgb(70, 39, 2);
 }
 .primary-btn {
   font-size: 12px;
   letter-spacing: 2px;
   font-weight: 500;
   font-family: var(--inter);
-  color: var(--head-black);
+  color: var(--blue);
   line-height: 100%;
   background-color: var(--skyblue);
   border: 1px solid var(--skyblue);
@@ -151,20 +103,13 @@ p.eyebrow-head {
   text-align: center;
   display: inline-block;
   width: fit-content;
+  border-radius: 25px;
 }
 .primary-btn:hover {
   background: none;
-  border-color: var(--pink);
-  color: var(--pink);
-}
-.primary-btn.pink {
-  background-color: var(--pink);
-  border: 1px solid var(--pink);
-}
-.primary-btn.pink:hover {
-  background: none;
-  border-color: var(--head-black);
-  color: var(--head-black);
+  border-color: var(--blue);
+  color: #fff;
+  background-color: var(--blue);
 }
 .container {
   padding: 0px 60px;
@@ -204,6 +149,7 @@ p.eyebrow-head {
 .heading {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   margin-bottom: 50px;
 }
