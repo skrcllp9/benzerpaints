@@ -1,0 +1,206 @@
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  padding: 24px 60px;
+}
+.site-header-bar {
+  /* Needs its own stacking position — otherwise the mobile menu's dark
+     backdrop (a later sibling with z-index:55) paints over the bar too,
+     dimming it along with the rest of the page. */
+  position: relative;
+  z-index: 56;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 10px 12px 10px 24px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 30px rgba(25, 37, 67, 0.1);
+}
+.site-header-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.site-header-logo img {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+.site-header-nav-desktop ul,
+.site-header-nav-mobile ul {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+.site-header-nav-desktop a,
+.site-header-nav-mobile a {
+  font-family: var(--inter);
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  color: var(--head-black);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.site-header-nav-desktop a:hover,
+.site-header-nav-mobile a:hover {
+  background: linear-gradient(90deg, #e63946, #f7b733, #39b54a);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.site-header-nav-mobile {
+  display: none;
+}
+.site-header-cta-drawer {
+  display: none;
+}
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.site-header-cta {
+  padding: 10px 24px;
+  font-size: 11px;
+}
+.site-header-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+.site-header-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--head-black);
+  border-radius: 2px;
+  transition: 0.3s ease all;
+}
+.site-header-toggle.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.site-header-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.site-header-toggle.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+.site-header-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(25, 37, 67, 0.35);
+  z-index: 55;
+}
+
+@media screen and (max-width: 991px) {
+  .site-header {
+    padding: 16px 20px;
+  }
+  .site-header-bar {
+    padding: 8px 18px 8px 18px;
+  }
+  .site-header-nav-desktop {
+    display: none;
+  }
+  .site-header-toggle {
+    display: flex;
+  }
+  .site-header-actions .site-header-cta {
+    display: none;
+  }
+  .site-header-nav-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    right: 20px;
+    max-height: calc(100dvh - 120px);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.14);
+    padding: 32px 24px;
+    border-radius: 28px;
+    overflow-y: auto;
+    z-index: 60;
+    transform-origin: top center;
+    /* Opens top-to-bottom like a curtain, revealing the panel without
+       stretching/distorting the links inside it (a scale-based reveal
+       would visibly squash the text mid-animation). Animated via GSAP
+       (see Header.jsx) rather than a CSS `transition` — a `transition`
+       fix for a "works from the second open onward" mobile quirk didn't
+       hold up on device, so this is driven explicitly frame-by-frame
+       instead, which can't depend on the browser's own transition-start
+       timing at all. Do not add `transition: clip-path` back here — it
+       would fight GSAP's own per-frame updates to the same property. */
+    clip-path: inset(0 0 100% 0 round 28px);
+    pointer-events: none;
+    will-change: clip-path;
+  }
+  .site-header-nav-mobile.is-open {
+    pointer-events: auto;
+  }
+  .site-header-nav-mobile ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    width: 100%;
+    text-align: center;
+  }
+  .site-header-nav-mobile a {
+    font-size: 12px;
+  }
+  .site-header-nav-mobile .primary-btn.blue{
+    font-size: 11px;
+  }
+  .site-header-cta-drawer {
+    display: inline-block;
+    margin-top: 28px;
+    width: fit-content;
+  }
+}
+@media screen and (max-width: 480px) {
+  .site-header {
+    padding: 14px 16px;
+  }
+  .site-header-logo img {
+    height: 32px;
+  }
+  .site-header-toggle {
+    width: 24px;
+    height: 24px;
+    gap: 4px;
+  }
+  .site-header-toggle.is-open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .site-header-toggle.is-open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+}

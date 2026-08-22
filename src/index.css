@@ -1,12 +1,12 @@
 @font-face {
-  font-family: 'infinity';
-  src: url(../fonts/Beyond Infinity.woff) format('woff');
+  font-family: "infinity";
+  src: url(../fonts/Beyond Infinity.woff) format("woff");
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
 :root {
-  --beyond: 'infinity';
+  --beyond: "infinity";
   --inter: "Inter Tight", sans-serif;
   --brico: "Bricolage Grotesque", sans-serif;
   --body-color: #fefefe;
@@ -110,6 +110,15 @@ p.eyebrow-head {
   border-color: var(--blue);
   color: #fff;
   background-color: var(--blue);
+}
+.primary-btn.blue {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+.primary-btn.blue:hover{
+  background: none;
+  color: var(--blue);
 }
 .container {
   padding: 0px 60px;
@@ -384,7 +393,7 @@ form.contact-form .contact-number-wrap {
     padding-top: 120px;
   }
   p.eyebrow-head {
-    font-size: 16px;
+    font-size: 32px;
   }
   p span.big-pink {
     font-size: 32px;
@@ -434,7 +443,7 @@ form.contact-form .contact-number-wrap {
     height: 90px;
   }
   p.eyebrow-head {
-    font-size: 14px;
+    font-size: 24px;
   }
   .owl-custom-prev,
   .owl-custom-next {

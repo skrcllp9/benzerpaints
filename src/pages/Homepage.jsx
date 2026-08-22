@@ -12,18 +12,6 @@ const PRODUCT_CATEGORIES = [
   { title: "Waterproof Cement", image: "/images/waterproofing-cement.avif" },
 ];
 
-const CardArrowIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path
-      d="M7 17L17 7M17 7H8M17 7V16"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 const Homepage = () => {
   const heroSpaceRef = useRef(null);
   const heroRef = useRef(null);
@@ -236,14 +224,14 @@ const Homepage = () => {
       </div>
 
       <section className="our-products">
-        <div className="container">
-          <div className="heading">
-            <p className="eyebrow-head">What We Offer</p>
-            <h2>Our Products</h2>
-          </div>
-        </div>
-
         <div className="products-scroll-pin" ref={productsPinRef}>
+          <div className="container">
+            <div className="heading">
+              <p className="eyebrow-head">What We Offer</p>
+              <h2>Our Products</h2>
+            </div>
+          </div>
+
           <div className="products-track" ref={productsTrackRef}>
             {PRODUCT_CATEGORIES.map((cat) => (
               <div className="product-card" key={cat.title}>
@@ -252,9 +240,6 @@ const Homepage = () => {
                 </div>
                 <div className="product-card-info">
                   <span className="product-card-title">{cat.title}</span>
-                  <span className="product-card-arrow" aria-hidden="true">
-                    <CardArrowIcon />
-                  </span>
                 </div>
               </div>
             ))}

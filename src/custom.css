@@ -32,7 +32,10 @@
 .hero-banner-content {
   z-index: 3;
   position: absolute;
-  top: 7%;
+  /* Fixed px, not %: the floating header has a fixed pixel height
+     regardless of hero height, so a percentage offset can't reliably
+     clear it — it overlapped the "Bring Life To Every Wall" heading. */
+  top: 130px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -86,7 +89,12 @@
   height: 100dvh;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 48px;
+}
+.products-scroll-pin .heading {
+  margin-bottom: 0;
 }
 .products-track {
   display: flex;
@@ -101,6 +109,13 @@
      revealed as the pinned section is scrolled through. */
   width: calc((100vw - 184px) / 3);
   cursor: default;
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  /* 3-up gets cramped enough at tablet widths to wrap titles — 2-up
+     gives each card room to breathe. */
+  .product-card {
+    width: calc((100vw - 152px) / 2);
+  }
 }
 .product-card-media {
   width: 100%;
@@ -159,6 +174,9 @@
   height: 16px;
 }
 @media screen and (max-width: 767px) {
+  .products-scroll-pin {
+    gap: 28px;
+  }
   .products-track {
     padding: 0 20px;
     gap: 20px;
@@ -180,8 +198,22 @@
   .hero-scroll-space {
     height: 110vh;
   }
+  /* HeroBannerMob is a portrait (3:4) photo — on narrow/tall phones,
+     object-fit:cover was cropping it hard on the left/right to fill the
+     full-height container. Switch to contain (full width, no side crop)
+     and fill any top/bottom letterbox with a neutral tone instead of
+     leaving bare background showing through. */
+  .hero-banner-media {
+    background-color: var(--tint-white);
+  }
+  .hero-banner-media picture,
+  .hero-banner-media img {
+    top: 0;
+    height: 125%;
+    object-fit: contain;
+  }
   .hero-banner-content {
-    top: 5%;
+    top: 100px;
     gap: 14px;
   }
   .hero-banner-content h1 {
@@ -192,5 +224,8 @@
   }
   .our-products {
     padding: 60px 0;
+  }
+  .product-card-media {
+    aspect-ratio: 3 / 4.5;
   }
 }
