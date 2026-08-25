@@ -1,6 +1,6 @@
 @font-face {
   font-family: "infinity";
-  src: url(../fonts/Beyond Infinity.woff) format("woff");
+  src: url("../fonts/Beyond%20Infinity.woff") format("woff");
   font-weight: 400;
   font-display: swap;
   font-style: normal;
@@ -9,13 +9,12 @@
   --beyond: "infinity";
   --inter: "Inter Tight", sans-serif;
   --brico: "Bricolage Grotesque", sans-serif;
-  --body-color: #fefefe;
+  --body-color: #f7f0e8;
   --text-brown: #3e2c25;
   --head-black: #192543;
   --skyblue: #8fafd9;
   --blue: #101f4c;
   --beige: #efe6dc;
-  --tint-white: #f7f0e8;
   --brand-gradient: linear-gradient(90deg, #e63946, #d57f45, #39b54a);
 }
 * {

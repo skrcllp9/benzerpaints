@@ -75,6 +75,31 @@ const Homepage = () => {
           </div>
         </div>
       </section>
+
+      <section className="become-dealer">
+        <picture className="become-dealer-media">
+          <source media="(max-width: 767px)" srcSet="/images/become-dealer-bg-mob.png" />
+          <img src="/images/become-dealer-bg.png" alt="" loading="lazy" />
+        </picture>
+        <div className="become-dealer-fade" aria-hidden="true" />
+        <div className="container">
+          <div className="become-dealer-content">
+            <p className="eyebrow-head">Distributor Partnership</p>
+            <h2>
+              Become A
+              <br />
+              Benzer Dealer
+            </h2>
+            <p>
+              Join our growing network of dealers and distributors across
+              India and grow your business with Benzer Paints.
+            </p>
+            <a href="#dealer-inquiry" className="primary-btn">
+              Apply Now
+            </a>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

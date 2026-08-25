@@ -92,6 +92,64 @@
   width: 16px;
   height: 16px;
 }
+.become-dealer {
+  position: relative;
+  width: 100%;
+  min-height: 640px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.become-dealer-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.become-dealer-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.become-dealer-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* rgba matches --body-color (#f7f0e8) — fades the bg image's hard top
+     and bottom edges into the page background instead of cutting sharply. */
+  background: linear-gradient(
+    180deg,
+    rgba(247, 240, 232, 1) 0%,
+    rgba(247, 240, 232, 0) 16%,
+    rgba(247, 240, 232, 0) 84%,
+    rgba(247, 240, 232, 1) 100%
+  );
+}
+.become-dealer-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  max-width: 600px;
+}
+.become-dealer-content .eyebrow-head {
+  font-size: 42px;
+}
+.become-dealer-content h2 {
+  font-size: clamp(36px, 5vw, 58px);
+}
+.become-dealer-content p:not(.eyebrow-head) {
+  font-size: 18px;
+  max-width: 460px;
+}
+@media screen and (max-width: 991px) {
+  .become-dealer {
+    min-height: 560px;
+  }
+}
 @media screen and (max-width: 767px) {
   .products-scroll-pin {
     gap: 28px;
@@ -119,5 +177,23 @@
   }
   .product-card-media {
     aspect-ratio: 3 / 4.5;
+  }
+  .become-dealer {
+    min-height: 780px;
+    align-items: flex-start;
+    padding-top: 70px;
+  }
+  .become-dealer-content {
+    max-width: 100%;
+    gap: 16px;
+  }
+  .become-dealer-content .eyebrow-head {
+    font-size: 28px;
+  }
+  .become-dealer-content h2 {
+    font-size: clamp(30px, 9vw, 40px);
+  }
+  .become-dealer-content p:not(.eyebrow-head) {
+    font-size: 14px;
   }
 }
