@@ -5,6 +5,7 @@
   width: 100%;
   z-index: 50;
   padding: 24px 60px;
+  will-change: transform;
 }
 .site-header-bar {
   /* Needs its own stacking position — otherwise the mobile menu's dark
@@ -57,7 +58,7 @@
 }
 .site-header-nav-desktop a:hover,
 .site-header-nav-mobile a:hover {
-  background: linear-gradient(90deg, #e63946, #d57f45, #39b54a);
+  background: var(--brand-gradient);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;

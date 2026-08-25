@@ -106,14 +106,36 @@
   transition: all 0.3s ease;
 }
 .site-footer-brochure {
+  position: relative;
   border: 1.5px solid var(--head-black);
   color: var(--head-black);
   background: transparent;
 }
+.site-footer-brochure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--brand-gradient);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
 .site-footer-brochure:hover {
-  background: var(--head-black);
-  border-color: var(--head-black);
-  color: #fff;
+  background: var(--brand-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  border-color: transparent;
+}
+.site-footer-brochure:hover::before {
+  opacity: 1;
 }
 
 /* Nav + contact column, right-aligned per reference. */

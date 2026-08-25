@@ -1,0 +1,71 @@
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 480px;
+  overflow: hidden;
+  background: var(--head-black);
+  cursor: default;
+}
+
+.hero-carousel-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform, clip-path;
+  backface-visibility: hidden;
+}
+
+.hero-carousel-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 20, 30, 0.12) 0%,
+    rgba(16, 20, 30, 0) 22%,
+    rgba(16, 20, 30, 0) 70%,
+    rgba(16, 20, 30, 0.32) 100%
+  );
+}
+
+.hero-carousel-progress {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 21;
+  width: min(220px, 40%);
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+}
+
+.hero-carousel-progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--tint-white);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media screen and (max-width: 767px) {
+  .hero-carousel {
+    min-height: 420px;
+  }
+  .hero-carousel-progress {
+    bottom: 20px;
+    width: min(160px, 50%);
+  }
+}

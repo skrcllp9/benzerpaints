@@ -16,6 +16,7 @@
   --blue: #101f4c;
   --beige: #efe6dc;
   --tint-white: #f7f0e8;
+  --brand-gradient: linear-gradient(90deg, #e63946, #d57f45, #39b54a);
 }
 * {
   margin: 0;
@@ -87,14 +88,15 @@ p.eyebrow-head {
   color: rgb(70, 39, 2);
 }
 .primary-btn {
+  position: relative;
   font-size: 12px;
   letter-spacing: 2px;
   font-weight: 500;
   font-family: var(--inter);
-  color: var(--blue);
+  color: #fff;
   line-height: 100%;
-  background-color: var(--skyblue);
-  border: 1px solid var(--skyblue);
+  background-color: var(--blue);
+  border: 1px solid var(--blue);
   transition: 0.4s ease all;
   cursor: pointer;
   text-decoration: none;
@@ -106,20 +108,35 @@ p.eyebrow-head {
   width: fit-content;
   border-radius: 25px;
 }
+/* Gradient ring, drawn as a mask-based overlay so it follows the button's
+   own border-radius (a plain gradient border-image ignores border-radius).
+   Sits at opacity:0 until hover instead of being added/removed, so it can
+   fade in rather than pop. */
+.primary-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--brand-gradient);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
 .primary-btn:hover {
-  background: none;
-  border-color: var(--blue);
-  color: #fff;
-  background-color: var(--blue);
+  background: var(--brand-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  border-color: transparent;
 }
-.primary-btn.blue {
-  background: var(--blue);
-  color: #fff;
-  border-color: var(--blue);
-}
-.primary-btn.blue:hover{
-  background: none;
-  color: var(--blue);
+.primary-btn:hover::before {
+  opacity: 1;
 }
 .container {
   padding: 0px 60px;

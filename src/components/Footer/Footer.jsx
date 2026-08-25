@@ -62,6 +62,8 @@ const FOOTER_LINKS = [
   { label: "About Us", href: "#" },
   { label: "Products", href: "#" },
   { label: "Career", href: "#" },
+  { label: "Blogs", href: "#" },
+  { label: "FAQs", href: "#" },
   { label: "Contact Us", href: "#" },
 ];
 

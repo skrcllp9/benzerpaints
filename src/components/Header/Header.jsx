@@ -1,18 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import lenis from "../../animation";
 import "./header.css";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Below this scroll position the header always stays shown, regardless of
+// direction — avoids it flickering hidden/shown right at the top of the page.
+const HIDE_AFTER = 80;
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "#" },
   { label: "Products", href: "#" },
   { label: "Contact Us", href: "#" },
+  { label: "Blogs", href: "#" },
   { label: "Career", href: "#" },
 ];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef(null);
   const navRef = useRef(null);
   // Drives the reveal via GSAP instead of a CSS `transition`, so it can't
   // depend on a mobile browser's own state-change/GPU-layer timing on the
@@ -37,6 +46,35 @@ const Header = () => {
   }, [menuOpen]);
 
   useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    // Hides the header on scroll-down and brings it back on scroll-up —
+    // otherwise it sits fixed on top of the pinned "Our Products" section
+    // and collides with that section's own heading while it's pinned.
+    const yTo = gsap.quickTo(el, "yPercent", { duration: 0.4, ease: "power3.out" });
+
+    if (menuOpen) yTo(0);
+
+    const st = ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: (self) => {
+        if (menuOpen) return;
+        if (self.scroll() < HIDE_AFTER) {
+          yTo(0);
+        } else if (self.direction === 1) {
+          yTo(-100);
+        } else {
+          yTo(0);
+        }
+      },
+    });
+
+    return () => st.kill();
+  }, [menuOpen]);
+
+  useEffect(() => {
     const el = navRef.current;
     if (!el) return;
 
@@ -51,7 +89,7 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <header className="site-header">
+    <header className="site-header" ref={headerRef}>
       <div className="site-header-bar">
         <a href="/" className="site-header-logo">
           <img src="/icons/benzer-logo.png" alt="Benzer Paints" />

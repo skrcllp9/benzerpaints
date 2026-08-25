@@ -1,87 +1,6 @@
-.hero-scroll-space {
-  position: relative;
-  height: 130vh;
-}
-.hero-banner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  min-height: 480px;
-  overflow: hidden;
-}
-.hero-banner-media {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.hero-banner-media picture,
-.hero-banner-media img {
-  display: block;
-  position: absolute;
-  top: 0%;
-  left: 0;
-  width: 100%;
-  height: 105%;
-  object-fit: cover;
-  will-change: transform;
-}
-.hero-banner-content {
-  z-index: 3;
-  position: absolute;
-  /* Fixed px, not %: the floating header has a fixed pixel height
-     regardless of hero height, so a percentage offset can't reliably
-     clear it — it overlapped the "Bring Life To Every Wall" heading. */
-  top: 130px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  text-align: center;
-  padding: 0 20px;
-}
-.hero-banner-content h1 {
-  font-size: clamp(36px, 4vw, 62px);
-  letter-spacing: -0.03em;
-  line-height: 100%;
-}
-.hero-banner-content p {
-  font-family: var(--inter);
-  font-size: 16px;
-  line-height: 138%;
-  letter-spacing: 0.02em;
-  color: var(--text-brown);
-  max-width: 460px;
-}
-.shape-overlays {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  display: block;
-  pointer-events: none;
-}
 .our-products {
   padding: 100px 0;
   position: relative;
-  /* shapeGradient3 (the last wave layer) ends at #e7dccb along the hero's
-     bottom edge, which is exactly what touches this section's top edge —
-     so this background CONTINUES from that same color rather than
-     restarting the gradient, keeping the handoff seamless. */
-  background: linear-gradient(
-    180deg,
-    #e7dccb 0%,
-    var(--body-color) 60vh,
-    var(--body-color) 100%
-  );
 }
 .products-scroll-pin {
   width: 100%;
@@ -194,33 +113,6 @@
   .product-card-arrow svg {
     width: 14px;
     height: 14px;
-  }
-  .hero-scroll-space {
-    height: 110vh;
-  }
-  /* HeroBannerMob is a portrait (3:4) photo — on narrow/tall phones,
-     object-fit:cover was cropping it hard on the left/right to fill the
-     full-height container. Switch to contain (full width, no side crop)
-     and fill any top/bottom letterbox with a neutral tone instead of
-     leaving bare background showing through. */
-  .hero-banner-media {
-    background-color: var(--tint-white);
-  }
-  .hero-banner-media picture,
-  .hero-banner-media img {
-    top: 0;
-    height: 125%;
-    object-fit: contain;
-  }
-  .hero-banner-content {
-    top: 100px;
-    gap: 14px;
-  }
-  .hero-banner-content h1 {
-    font-size: clamp(24px, 6vw, 32px);
-  }
-  .hero-banner-content p {
-    font-size: 14px;
   }
   .our-products {
     padding: 60px 0;
