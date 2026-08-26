@@ -100,6 +100,16 @@ const Homepage = () => {
           </div>
         </div>
       </section>
+      <section className="video-testimonial">
+        <div className="container">
+          <div className="videp-testimonial-in">
+            <div className="heading">
+              <p className="eyebrow-head">Their Words</p>
+              <h2>Our Heappy Customer</h2>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

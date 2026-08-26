@@ -2,25 +2,18 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import "./hero-banner.css";
 
-// Each slide is art-directed per breakpoint (different crops, not just
-// resolutions), so responsiveness is a <picture>/<source> swap rather than
-// a CSS background-size trick. tab = max-width 991px, mob = max-width 767px.
 const SLIDES = [
-  { base: "/images/img25.jpg", tab: "/images/img25tab.jpg", mob: "/images/img25mob.jpg" },
-  { base: "/images/img31.jpg", tab: "/images/img31tab.jpg", mob: "/images/img31mob.jpg" },
-  { base: "/images/img40.jpg", tab: "/images/img40tab.jpg", mob: "/images/img40mob.jpg" },
-  { base: "/images/img28.jpg", tab: "/images/img28tab.jpg", mob: "/images/img28mob.jpg" },
+  { base: "/images/herobanner1.jpg", mob: "/images/herobanner1mob.jpg" },
+  { base: "/images/herobanner2.jpg", mob: "/images/herobanner2mob.jpg" },
+  { base: "/images/herobanner3.jpg", mob: "/images/herobanner3mob.jpg" },
+  { base: "/images/herobanner4.jpg", mob: "/images/herobanner4mob.jpg" },
 ];
 
-const DWELL = 4.2; // seconds each image sits fully revealed
-
-// Transition: the incoming image is sliced into vertical bars that grow in
-// like paint-roller strokes — alternating bars grow down from the top and
-// up from the bottom, so they interlock instead of sweeping uniformly.
+const DWELL = 4.2;
 const NUM_BARS = 9;
-const BAR_DURATION = 1; // seconds a single bar takes to fully open
-const BAR_STAGGER = 0.11; // seconds between one bar starting and the next
-const BAR_JITTER = 0.18; // extra random per-bar delay, for an uneven roller feel
+const BAR_DURATION = 1;
+const BAR_STAGGER = 0.11;
+const BAR_JITTER = 0.18;
 const BAR_DIRECTIONS = Array.from({ length: NUM_BARS }, (_, i) =>
   i % 2 === 0 ? "top" : "bottom"
 );
@@ -164,7 +157,6 @@ const HeroBanner = () => {
         {SLIDES.map((slide, i) => (
           <picture key={slide.base}>
             <source media="(max-width: 767px)" srcSet={slide.mob} />
-            <source media="(max-width: 991px)" srcSet={slide.tab} />
             <img
               ref={(el) => (slideRefs.current[i] = el)}
               className="hero-carousel-slide"
