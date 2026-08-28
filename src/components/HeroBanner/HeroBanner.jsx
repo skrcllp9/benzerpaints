@@ -2,18 +2,46 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import "./hero-banner.css";
 
+// headline uses a literal "\n" for a forced line break (rendered via
+// `white-space: pre-line` in CSS) instead of JSX <br/> — that keeps the
+// text update as a single `.textContent` assignment in the animation
+// below, no innerHTML/dangerouslySetInnerHTML needed.
 const SLIDES = [
-  { base: "/images/herobanner1.jpg", mob: "/images/herobanner1mob.jpg" },
-  { base: "/images/herobanner2.jpg", mob: "/images/herobanner2mob.jpg" },
-  { base: "/images/herobanner3.jpg", mob: "/images/herobanner3mob.jpg" },
-  { base: "/images/herobanner4.jpg", mob: "/images/herobanner4mob.jpg" },
+  {
+    base: "/images/herobanner1.jpg",
+    tab: "/images/homebanner1tab.jpg",
+    mob: "/images/herobanner1mob.jpg",
+    headline: "Bring life to\nevery wall",
+    desc: "Colours that turn everyday spaces into something special.",
+  },
+  {
+    base: "/images/herobanner2.jpg",
+    tab: "/images/homebanner2tab.jpg",
+    mob: "/images/herobanner2mob.jpg",
+    headline: "Protect today.\nLive worry-free tomorrow.",
+    desc: "Protection that helps your walls stand strong through everyday challenges.",
+  },
+  {
+    base: "/images/herobanner3.jpg",
+    tab: "/images/homebanner3tab.jpg",
+    mob: "/images/herobanner3mob.jpg",
+    headline: "Shades that speak beauty in every wall.",
+    desc: "Wide range of colours for modern and elegant homes.",
+  },
+  {
+    base: "/images/herobanner4.jpg",
+    tab: "/images/homebanner4tab.jpg",
+    mob: "/images/herobanner4mob.jpg",
+    headline: "Perfect tools.\nPerfect finish.",
+    desc: "Premium range of painting tools for every need.",
+  },
 ];
 
-const DWELL = 4.2;
+const DWELL = 3.2;
 const NUM_BARS = 9;
-const BAR_DURATION = 1;
-const BAR_STAGGER = 0.11;
-const BAR_JITTER = 0.18;
+const BAR_DURATION = 0.75;
+const BAR_STAGGER = 0.08;
+const BAR_JITTER = 0.13;
 const BAR_DIRECTIONS = Array.from({ length: NUM_BARS }, (_, i) =>
   i % 2 === 0 ? "top" : "bottom"
 );
@@ -46,6 +74,8 @@ const buildBarsClip = (bars) => {
 const HeroBanner = () => {
   const slideRefs = useRef([]);
   const progressRef = useRef(null);
+  const headingRef = useRef(null);
+  const descRef = useRef(null);
 
   useEffect(() => {
     const slides = slideRefs.current.filter(Boolean);
@@ -59,6 +89,40 @@ const HeroBanner = () => {
     let dwellCall = null;
     let transitionTl = null;
     let progressTween = null;
+    let textTl = null;
+    let entranceTl = null;
+
+    // Crossfades the heading/desc out (through a light blur, matching the
+    // scroll-reveal treatment used for headings elsewhere on the page),
+    // swaps their text to the next slide's copy while invisible, then
+    // blurs back in. Kept as one h1/p pair in the DOM (rather than four
+    // stacked per-slide blocks) so there's only ever a single real heading
+    // for accessibility/SEO.
+    const swapText = (index) => {
+      const heading = headingRef.current;
+      const desc = descRef.current;
+      if (!heading || !desc) return null;
+
+      return gsap
+        .timeline()
+        .to([heading, desc], { opacity: 0, y: -8, filter: "blur(10px)", duration: 0.35, ease: "power1.in" })
+        .call(() => {
+          heading.textContent = SLIDES[index].headline;
+          desc.textContent = SLIDES[index].desc;
+        })
+        .to([heading, desc], { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, ease: "power2.out" });
+    };
+
+    // First-load entrance — same blur-fade-in as every other heading on the
+    // page, since the hero's h1/p don't otherwise get one (they're already
+    // visible on mount, above the fold, never entering via scroll).
+    if (!reduceMotion && headingRef.current && descRef.current) {
+      entranceTl = gsap.fromTo(
+        [headingRef.current, descRef.current],
+        { opacity: 0, filter: "blur(16px)", y: 24 },
+        { opacity: 1, filter: "blur(0px)", y: 0, duration: 1.1, ease: "power3.out", stagger: 0.08, delay: 0.2 }
+      );
+    }
 
     if (reduceMotion) {
       // No bars — a plain, gentle crossfade.
@@ -73,6 +137,7 @@ const HeroBanner = () => {
         const next = (active + 1) % slides.length;
         gsap.to(slides[active], { opacity: 0, duration: 1, ease: "power1.inOut" });
         gsap.to(slides[next], { opacity: 1, duration: 1, ease: "power1.inOut" });
+        textTl = swapText(next);
         if (progressRef.current) {
           gsap.fromTo(
             progressRef.current,
@@ -89,6 +154,8 @@ const HeroBanner = () => {
       return () => {
         cancelled = true;
         dwellCall?.kill();
+        textTl?.kill();
+        entranceTl?.kill();
       };
     }
 
@@ -120,6 +187,7 @@ const HeroBanner = () => {
 
       dwellCall = gsap.delayedCall(DWELL, () => {
         if (cancelled) return;
+        textTl = swapText(next);
         transitionTl = gsap.timeline({
           onUpdate: () => {
             slides[next].style.clipPath = buildBarsClip(bars);
@@ -148,15 +216,18 @@ const HeroBanner = () => {
       dwellCall?.kill();
       transitionTl?.kill();
       progressTween?.kill();
+      textTl?.kill();
+      entranceTl?.kill();
     };
   }, []);
 
   return (
-    <section className="hero-carousel" aria-hidden="true">
+    <section className="hero-carousel">
       <div className="hero-carousel-stage">
         {SLIDES.map((slide, i) => (
           <picture key={slide.base}>
             <source media="(max-width: 767px)" srcSet={slide.mob} />
+            <source media="(max-width: 991px)" srcSet={slide.tab} />
             <img
               ref={(el) => (slideRefs.current[i] = el)}
               className="hero-carousel-slide"
@@ -169,6 +240,16 @@ const HeroBanner = () => {
         ))}
       </div>
       <div className="hero-carousel-scrim" />
+
+      <div className="hero-carousel-content">
+        <div className="container">
+          <div className="hero-carousel-text">
+            <h1 ref={headingRef}>{SLIDES[0].headline}</h1>
+            <p ref={descRef}>{SLIDES[0].desc}</p>
+          </div>
+        </div>
+      </div>
+
       <div className="hero-carousel-progress">
         <span className="hero-carousel-progress-bar" ref={progressRef} />
       </div>

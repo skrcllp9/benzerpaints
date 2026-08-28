@@ -43,8 +43,13 @@
   gap: 28px;
   list-style: none;
 }
-.site-header-nav-desktop a,
-.site-header-nav-mobile a {
+/* :not(.primary-btn) — the drawer CTA is an <a> too, so without this
+   exclusion these rules would override its white text with dark
+   var(--head-black), rendering it nearly invisible against the button's
+   own navy background. Excluding it lets the CTA fall through entirely to
+   its own .primary-btn styling (index.css), matching the desktop button. */
+.site-header-nav-desktop a:not(.primary-btn),
+.site-header-nav-mobile a:not(.primary-btn) {
   font-family: var(--inter);
   font-size: 13px;
   letter-spacing: 1px;
@@ -56,8 +61,8 @@
   transition: all 0.3s ease;
   white-space: nowrap;
 }
-.site-header-nav-desktop a:hover,
-.site-header-nav-mobile a:hover {
+.site-header-nav-desktop a:not(.primary-btn):hover,
+.site-header-nav-mobile a:not(.primary-btn):hover {
   background: var(--brand-gradient);
   background-clip: text;
   -webkit-background-clip: text;
@@ -113,7 +118,6 @@
 .site-header-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(25, 37, 67, 0.35);
   z-index: 55;
 }
 

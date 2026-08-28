@@ -86,6 +86,32 @@ p.eyebrow-head {
   font-weight: 500;
   color: rgb(70, 39, 2);
 }
+/* Scroll-reveal for eyebrow labels (see Homepage.jsx): the text wipes in
+   left-to-right via clip-path, then this underline draws in right after. */
+.eyebrow-head-text {
+  display: inline-block;
+}
+.eyebrow-underline {
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin-top: 10px;
+  background: var(--brand-gradient);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+/* Scroll-reveal for body copy under a heading: Homepage.jsx splits the
+   text into words wrapped in these two spans, then animates .word-inner
+   rising up out of .word-mask's overflow:hidden clip, staggered per word. */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.word-inner {
+  display: inline-block;
+  will-change: transform;
+}
 .primary-btn {
   position: relative;
   font-size: 12px;
