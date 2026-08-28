@@ -16,6 +16,11 @@
   --blue: #101f4c;
   --beige: #efe6dc;
   --brand-gradient: linear-gradient(90deg, #e63946, #d57f45, #39b54a);
+  /* Same orange/green as --brand-gradient's middle/last stops — reused as
+     flat accent colors so we're never inventing a new hue outside the
+     existing palette. */
+  --accent-orange: #d57f45;
+  --accent-green: #39b54a;
 }
 * {
   margin: 0;
@@ -79,6 +84,12 @@ a {
   font-weight: 400;
 }
 p.eyebrow-head {
+  /* Shrink-wraps to its content (text + underline) instead of taking the
+     full width of its container — otherwise the underline below (a block
+     element, always flush to its own box's left edge) drifts away from
+     the text whenever a parent centers via text-align rather than flex
+     align-items, since a full-width block ignores text-align entirely. */
+  display: inline-block;
   font-family: var(--beyond);
   letter-spacing: 2px;
   line-height: 100%;

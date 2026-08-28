@@ -92,6 +92,301 @@
   width: 16px;
   height: 16px;
 }
+.why-choose {
+  padding: 100px 0;
+  padding-bottom: 0px;
+}
+.why-choose-heading {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.why-choose-subhead {
+  margin-top: 10px;
+}
+.why-choose-desc {
+  font-family: var(--inter);
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.02em;
+  color: var(--text-brown);
+  margin-top: 18px;
+}
+.why-choose-desc strong {
+  font-weight: 700;
+  color: var(--head-black);
+}
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+.why-choose-card {
+  background: #fff;
+  padding: 32px 26px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(25, 37, 67, 0.06);
+}
+.why-choose-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.why-choose-card--orange .why-choose-card-icon {
+  background: rgba(213, 127, 69, 0.14);
+  color: var(--accent-orange);
+}
+.why-choose-card--blue .why-choose-card-icon {
+  background: rgba(16, 31, 76, 0.08);
+  color: var(--blue);
+}
+.why-choose-card--skyblue .why-choose-card-icon {
+  background: rgba(143, 175, 217, 0.3);
+  color: var(--blue);
+}
+.why-choose-card--brown .why-choose-card-icon {
+  background: rgba(62, 44, 37, 0.1);
+  color: var(--text-brown);
+}
+.why-choose-card-title {
+  font-family: var(--brico);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 125%;
+  color: var(--head-black);
+}
+.why-choose-card-desc {
+  font-family: var(--inter);
+  font-size: 14px;
+  line-height: 145%;
+  color: var(--text-brown);
+  opacity: 0.75;
+  margin-top: 10px;
+}
+.why-choose-cta-wrap {
+  text-align: center;
+  margin-top: 50px;
+}
+.painters-prefer {
+  padding: 100px 0;
+  padding-top: 0px;
+}
+.painters-prefer-panel {
+  background: #fff;
+  border-radius: 28px;
+  padding: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 56px;
+  box-shadow: 0 20px 50px rgba(25, 37, 67, 0.06);
+}
+.painters-prefer-intro {
+  /* Grows to balance against the diagram's fixed 480px width (needed for
+     its trig-based positioning, see .painters-prefer-diagram) instead of
+     sitting at a fixed, disproportionately narrow width — the two sides
+     read as roughly even now rather than the diagram dominating. */
+  flex: 1 1 0;
+  min-width: 320px;
+  max-width: 520px;
+  padding-right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.painters-prefer-heading {
+  font-size: clamp(32px, 3.6vw, 46px);
+  line-height: 112%;
+}
+.painters-prefer-desc {
+  font-family: var(--inter);
+  font-size: 15px;
+  line-height: 150%;
+  color: var(--text-brown);
+}
+
+/* --- Radial diagram: a center "quality" badge with 5 feature nodes placed
+   at exact 72° intervals around it (a true pentagon, not eyeballed corner
+   positions) using the standard CSS trick: rotate a zero-size wrapper
+   anchored at the container's center, translate outward by the orbit
+   radius, then counter-rotate the node's own content so its icon/label
+   stay upright. Connectors reuse the same 5 angles so they line up with
+   the nodes by construction.
+
+   Every size below is a calc() off --diagram-size (set once here, and
+   inherited by every descendant) rather than a hardcoded px value, at the
+   exact ratio it had in the original 480px design — so the *same* circular,
+   rotating layout renders at any width, just smaller, instead of swapping
+   to a different fallback layout on small screens.
+
+   --diagram-size uses vw, not %, on purpose: custom properties don't
+   freeze a percentage at the element that defines them — it's re-resolved
+   fresh wherever the variable is later read. .painters-prefer-orbit-node
+   (a descendant) has width:0;height:0, so a %-based --diagram-size used
+   inside *that* element's own translate() would resolve against its own
+   zero height, collapsing every node's orbit radius to 0 — which is
+   exactly what happened (all 5 nodes piling up at dead center) before
+   this was vw-based. vw always means "% of the viewport," so it resolves
+   identically no matter which element/property ends up reading it. */
+.painters-prefer-diagram {
+  --diagram-size: clamp(240px, 72vw, 480px);
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--diagram-size);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+.painters-prefer-orbit-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  /* 140/480 */
+  width: calc(var(--diagram-size) * 0.2917);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 1px solid rgba(25, 37, 67, 0.08);
+  background: var(--beige);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--diagram-size) * 0.033);
+}
+.painters-prefer-orbit-center-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--head-black);
+}
+.painters-prefer-orbit-center-icon svg {
+  /* 40/480, floored so it never shrinks past legibility */
+  width: max(22px, calc(var(--diagram-size) * 0.0833));
+  height: max(22px, calc(var(--diagram-size) * 0.0833));
+}
+
+/* One ring (radius 190/480 of the diagram) instead of a spoke connector
+   per node. The SVG's viewBox stays fixed (0 0 380 380); scaling its
+   rendered width/height scales everything inside it — the stroke width
+   and dash pattern included — proportionally along with it. */
+.painters-prefer-orbit-ring {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  /* 380/480 */
+  width: calc(var(--diagram-size) * 0.7917);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  display: block;
+  overflow: visible;
+}
+
+/* No CSS transform here on purpose — GSAP owns this element's rotation
+   exclusively (see the effect in Homepage.jsx). Sized to match
+   .painters-prefer-diagram exactly so GSAP's default 50%/50%
+   transform-origin lands on the diagram's true center. */
+.painters-prefer-orbit-group {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+}
+.painters-prefer-orbit-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+/* 190/480 for the orbit radius (translate distance) */
+.painters-prefer-orbit-node--top {
+  transform: rotate(0deg) translate(0, calc(var(--diagram-size) * -0.3958));
+}
+.painters-prefer-orbit-node--right {
+  transform: rotate(72deg) translate(0, calc(var(--diagram-size) * -0.3958));
+}
+.painters-prefer-orbit-node--bottom-right {
+  transform: rotate(144deg) translate(0, calc(var(--diagram-size) * -0.3958));
+}
+.painters-prefer-orbit-node--bottom-left {
+  transform: rotate(216deg) translate(0, calc(var(--diagram-size) * -0.3958));
+}
+.painters-prefer-orbit-node--left {
+  transform: rotate(288deg) translate(0, calc(var(--diagram-size) * -0.3958));
+}
+.painters-prefer-orbit-node-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* 130/480 */
+  width: calc(var(--diagram-size) * 0.2708);
+  text-align: center;
+  /* Also pins the rotation pivot to the icon's own center (half the orbit
+     icon's diameter below) — default 50%/50% would pivot against this
+     box's own variable auto height (titles wrap to 1 or 2 lines), which
+     is what actually caused the per-node misalignment: rotate() runs
+     *before* the translate() below in the composed transform, so an
+     origin based on variable height throws off the icon's position even
+     though the translate amount itself is fixed relative to the icon. */
+  transform-origin: 50% calc(var(--diagram-size) * 0.0583);
+}
+/* Y offset (not -50%) for the same reason: centers on the icon's own
+   fixed size, not the whole block's total (variable) height. */
+.painters-prefer-orbit-node--top .painters-prefer-orbit-node-content {
+  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(0deg);
+}
+.painters-prefer-orbit-node--right .painters-prefer-orbit-node-content {
+  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-72deg);
+}
+.painters-prefer-orbit-node--bottom-right .painters-prefer-orbit-node-content {
+  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-144deg);
+}
+.painters-prefer-orbit-node--bottom-left .painters-prefer-orbit-node-content {
+  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-216deg);
+}
+.painters-prefer-orbit-node--left .painters-prefer-orbit-node-content {
+  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-288deg);
+}
+/* No CSS transform here either — GSAP continuously counter-rotates this
+   (opposite of .painters-prefer-orbit-group, same duration) so the icon
+   and label stay upright while the node travels around the ring. */
+.painters-prefer-orbit-node-spin {
+  display: block;
+  width: 100%;
+}
+
+.painters-prefer-orbit-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 56/480 */
+  width: calc(var(--diagram-size) * 0.1167);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: var(--beige);
+  color: var(--head-black);
+  margin: 0 auto 10px;
+}
+.painters-prefer-orbit-icon svg {
+  /* 24/480, floored so the glyph itself never gets illegibly small */
+  width: max(14px, calc(var(--diagram-size) * 0.05));
+  height: max(14px, calc(var(--diagram-size) * 0.05));
+}
+.painters-prefer-feature-title {
+  font-family: var(--brico);
+  font-weight: 500;
+  font-size: clamp(11px, calc(var(--diagram-size) * 0.027), 13px);
+  line-height: 125%;
+  color: var(--head-black);
+}
 .become-dealer {
   position: relative;
   width: 100%;
@@ -161,7 +456,39 @@
      desktop grid already shows every card at once. */
   display: none;
 }
+/* Stacks the intro above the diagram once the row layout gets tight
+   (intro can't comfortably share width with the diagram below this) — the
+   diagram itself keeps its full circular/rotating structure at every
+   width now (see --diagram-size above), so this is purely about the
+   intro/diagram arrangement, not a fallback layout for the diagram. */
+@media screen and (max-width: 1249px) {
+  .painters-prefer-panel {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 36px 28px;
+    gap: 20px;
+  }
+  .painters-prefer-intro {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 28px;
+    align-items: center;
+    text-align: center;
+  }
+}
 @media screen and (max-width: 991px) {
+  .why-choose {
+    padding: 70px 0;
+    padding-bottom: 0px;
+  }
+  .why-choose-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 40px;
+  }
   .become-dealer {
     min-height: 560px;
   }
@@ -298,6 +625,30 @@
   text-overflow: ellipsis;
 }
 @media screen and (max-width: 767px) {
+  .why-choose {
+    padding: 56px 0;
+    padding-bottom: 0px;
+  }
+  .why-choose-desc {
+    font-size: 14px;
+  }
+  .painters-prefer {
+    padding: 54px 0;
+    padding-top: 0px;
+  }
+  .painters-prefer-panel {
+    padding: 50px 20px;
+    border-radius: 22px;
+    gap: 24px;
+  }
+  .why-choose-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .why-choose-card {
+    padding: 26px 22px;
+  }
   .products-scroll-pin {
     gap: 28px;
   }
