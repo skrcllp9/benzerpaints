@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./footer.css";
 
 const HeartIcon = () => (
@@ -58,13 +59,15 @@ const SOCIAL_LINKS = [
   { label: "Facebook", href: "#", Icon: FacebookIcon },
 ];
 
+// href starting with "/" is a real route (rendered via <Link>, no full
+// page reload); "#" entries are pages that don't exist yet.
 const FOOTER_LINKS = [
   { label: "About Us", href: "#" },
   { label: "Products", href: "#" },
   { label: "Career", href: "#" },
   { label: "Blogs", href: "#" },
   { label: "FAQs", href: "#" },
-  { label: "Contact Us", href: "#" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const Footer = () => {
@@ -75,9 +78,9 @@ const Footer = () => {
       <div className="container site-footer-top">
         <div className="site-footer-brand">
           <div className="site-footer-brand-row">
-            <a href="/" className="site-footer-logo">
+            <Link to="/" className="site-footer-logo">
               <img src="/icons/benzer-logo.png" alt="Benzer Paints" />
-            </a>
+            </Link>
             <img
               src="/icons/iso-logo.png"
               alt="ISO 9001:2015 Certified"
@@ -104,7 +107,11 @@ const Footer = () => {
             <ul>
               {FOOTER_LINKS.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href}>{link.label}</a>
+                  {link.href.startsWith("/") ? (
+                    <Link to={link.href}>{link.label}</Link>
+                  ) : (
+                    <a href={link.href}>{link.label}</a>
+                  )}
                 </li>
               ))}
             </ul>

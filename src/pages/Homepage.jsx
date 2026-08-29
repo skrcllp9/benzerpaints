@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import HeroBanner from "../components/HeroBanner/HeroBanner";
@@ -144,38 +144,9 @@ const PRODUCT_CATEGORIES = [
   { title: "Waterproof Cement", image: "/images/waterproofing-cement.avif" },
 ];
 
-// Add more entries here as clients send more testimonials — the grid
-// (.video-testimonial-in) wraps automatically, it isn't a fixed column
-// count. Every card points at the same placeholder clip for now; swap
-// each `video` (and `thumbnail`) once real per-client footage exists.
-const SAMPLE_VIDEO = "/videos/sample-video.mp4";
-const TESTIMONIALS = [
-  { name: "Client Name", title: "Designation, Company", thumbnail: "/images/testimonial-1.jpg", video: SAMPLE_VIDEO },
-  { name: "Client Name", title: "Designation, Company", thumbnail: "/images/testimonial-2.jpg", video: SAMPLE_VIDEO },
-  { name: "Client Name", title: "Designation, Company", thumbnail: "/images/testimonial-3.jpg", video: SAMPLE_VIDEO },
-  { name: "Client Name", title: "Designation, Company", thumbnail: "/images/testimonial-4.jpg", video: SAMPLE_VIDEO },
-];
-
 const Homepage = () => {
   const productsPinRef = useRef(null);
   const productsTrackRef = useRef(null);
-  const testimonialTrackRef = useRef(null);
-  const [playingTestimonial, setPlayingTestimonial] = useState(null);
-  // Tracks thumbnails that 404'd/failed to load (keyed by index) — a
-  // `thumbnail` path being set doesn't mean the file actually exists, so
-  // the video-first-frame fallback is decided at load time, not just from
-  // whether the field is filled in.
-  const [brokenThumbnails, setBrokenThumbnails] = useState({});
-
-  // Nudges the carousel by most of a viewport-width — only visible/relevant
-  // at the tablet/mobile breakpoint where .video-testimonial-in becomes a
-  // scroll-snap carousel instead of the desktop grid. Scroll-snap settles
-  // the rest, so this doesn't need to know individual card widths.
-  const scrollTestimonials = (direction) => {
-    const el = testimonialTrackRef.current;
-    if (!el) return;
-    el.scrollBy({ left: direction * el.clientWidth * 0.85, behavior: "smooth" });
-  };
 
   useEffect(() => {
     // Pinned horizontal-scroll card gallery, on every screen size — the
@@ -598,7 +569,7 @@ const Homepage = () => {
           </div>
         </div>
       </section>
-      <section className="video-testimonial">
+      {/* <section className="video-testimonial">
         <div className="container">
           <div className="heading">
             <p className="eyebrow-head">
@@ -708,7 +679,7 @@ const Homepage = () => {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };

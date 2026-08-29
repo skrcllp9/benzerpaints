@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import lenis from "../../animation";
@@ -10,11 +11,13 @@ gsap.registerPlugin(ScrollTrigger);
 // direction — avoids it flickering hidden/shown right at the top of the page.
 const HIDE_AFTER = 80;
 
+// href starting with "/" is a real route (rendered via <Link>, no full
+// page reload); "#" entries are pages that don't exist yet.
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "#" },
   { label: "Products", href: "#" },
-  { label: "Contact Us", href: "#" },
+  { label: "Contact Us", href: "/contact" },
   { label: "Blogs", href: "#" },
   { label: "Career", href: "#" },
 ];
@@ -91,15 +94,19 @@ const Header = () => {
   return (
     <header className="site-header" ref={headerRef}>
       <div className="site-header-bar">
-        <a href="/" className="site-header-logo">
+        <Link to="/" className="site-header-logo">
           <img src="/icons/benzer-logo.png" alt="Benzer Paints" />
-        </a>
+        </Link>
 
         <nav className="site-header-nav-desktop">
           <ul>
             {NAV_LINKS.map((link) => (
               <li key={link.label}>
-                <a href={link.href}>{link.label}</a>
+                {link.href.startsWith("/") ? (
+                  <Link to={link.href}>{link.label}</Link>
+                ) : (
+                  <a href={link.href}>{link.label}</a>
+                )}
               </li>
             ))}
           </ul>
@@ -134,9 +141,15 @@ const Header = () => {
         <ul>
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
-              <a href={link.href} onClick={() => setMenuOpen(false)}>
-                {link.label}
-              </a>
+              {link.href.startsWith("/") ? (
+                <Link to={link.href} onClick={() => setMenuOpen(false)}>
+                  {link.label}
+                </Link>
+              ) : (
+                <a href={link.href} onClick={() => setMenuOpen(false)}>
+                  {link.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>
