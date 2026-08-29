@@ -123,9 +123,10 @@
   margin-top: 56px;
 }
 .why-choose-card {
-  background: #fff;
+  background: #efe6dc;
   padding: 32px 26px;
   text-align: center;
+  border-radius: 22px;
   box-shadow: 0 12px 30px rgba(25, 37, 67, 0.06);
 }
 .why-choose-card-icon {
@@ -175,7 +176,15 @@
 .painters-prefer {
   padding: 100px 0;
   padding-top: 0px;
-  background: #fff;
+  /* The orbit group is continuously rotated by GSAP, and a rotated box's
+     bounding box is wider than the box itself — that transformed overflow
+     counts toward the page's scrollable width even though nothing visible
+     sits out there, which pushed document.scrollWidth past the viewport on
+     narrow screens and left a blank strip beside every full-width section
+     (the hero most visibly). `clip` rather than `hidden` so this doesn't
+     become a scroll container, which would break the pinned ScrollTriggers
+     elsewhere on the page. */
+  overflow-x: clip;
 }
 .painters-prefer-panel {
 
@@ -201,13 +210,13 @@
   align-items: flex-start;
   gap: 16px;
 }
+/* No font-size here — the h2 keeps index.css's global heading scale. */
 .painters-prefer-heading {
-  font-size: clamp(32px, 3.6vw, 46px);
   line-height: 112%;
 }
+/* No font-size here either — the paragraph keeps index.css's global p size. */
 .painters-prefer-desc {
   font-family: var(--inter);
-  font-size: 15px;
   line-height: 150%;
   color: var(--text-brown);
 }
@@ -337,24 +346,24 @@
      *before* the translate() below in the composed transform, so an
      origin based on variable height throws off the icon's position even
      though the translate amount itself is fixed relative to the icon. */
-  transform-origin: 50% calc(var(--diagram-size) * 0.0583);
+  transform-origin: 50% calc(var(--diagram-size) * 0.075);
 }
 /* Y offset (not -50%) for the same reason: centers on the icon's own
    fixed size, not the whole block's total (variable) height. */
 .painters-prefer-orbit-node--top .painters-prefer-orbit-node-content {
-  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(0deg);
+  transform: translate(-50%, calc(var(--diagram-size) * -0.075)) rotate(0deg);
 }
 .painters-prefer-orbit-node--right .painters-prefer-orbit-node-content {
-  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-72deg);
+  transform: translate(-50%, calc(var(--diagram-size) * -0.075)) rotate(-72deg);
 }
 .painters-prefer-orbit-node--bottom-right .painters-prefer-orbit-node-content {
-  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-144deg);
+  transform: translate(-50%, calc(var(--diagram-size) * -0.075)) rotate(-144deg);
 }
 .painters-prefer-orbit-node--bottom-left .painters-prefer-orbit-node-content {
-  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-216deg);
+  transform: translate(-50%, calc(var(--diagram-size) * -0.075)) rotate(-216deg);
 }
 .painters-prefer-orbit-node--left .painters-prefer-orbit-node-content {
-  transform: translate(-50%, calc(var(--diagram-size) * -0.0583)) rotate(-288deg);
+  transform: translate(-50%, calc(var(--diagram-size) * -0.075)) rotate(-288deg);
 }
 /* No CSS transform here either — GSAP continuously counter-rotates this
    (opposite of .painters-prefer-orbit-group, same duration) so the icon
@@ -362,31 +371,93 @@
 .painters-prefer-orbit-node-spin {
   display: block;
   width: 100%;
+  /* Same pivot as .painters-prefer-orbit-node-content above: the icon's own
+     center, half the orbit icon's diameter down. Declared here rather than
+     passed to the GSAP tween so it scales with --diagram-size instead of
+     being pinned to one hardcoded pixel value; GSAP reads the computed
+     transform-origin when the tween doesn't set one. */
+  transform-origin: 50% calc(var(--diagram-size) * 0.075);
 }
 
 .painters-prefer-orbit-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* 56/480 */
-  width: calc(var(--diagram-size) * 0.1167);
+  /* 72/480 — half of this ratio (0.075) is what pins each node onto the
+     ring, so the transform-origin/translate values below must be kept in
+     lockstep with any change here or the nodes drift off the circle. */
+  width: calc(var(--diagram-size) * 0.15);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: var(--beige);
   color: var(--head-black);
-  margin: 0 auto 10px;
+  margin: 0 auto 12px;
 }
 .painters-prefer-orbit-icon svg {
-  /* 24/480, floored so the glyph itself never gets illegibly small */
-  width: max(14px, calc(var(--diagram-size) * 0.05));
-  height: max(14px, calc(var(--diagram-size) * 0.05));
+  /* 32/480, floored so the glyph itself never gets illegibly small */
+  width: max(18px, calc(var(--diagram-size) * 0.0667));
+  height: max(18px, calc(var(--diagram-size) * 0.0667));
 }
 .painters-prefer-feature-title {
   font-family: var(--brico);
   font-weight: 500;
-  font-size: clamp(11px, calc(var(--diagram-size) * 0.027), 13px);
+  font-size: clamp(13px, calc(var(--diagram-size) * 0.0333), 16px);
   line-height: 125%;
   color: var(--head-black);
+}
+.brochure {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 100vh;
+}
+.brochure-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.brochure-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.brochure-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* rgba matches --body-color (#f7f0e8) — fades the bg image's hard top
+     and bottom edges into the page background instead of cutting sharply. */
+  background: linear-gradient(
+    180deg,
+    rgba(247, 240, 232, 1) 0%,
+    rgba(247, 240, 232, 0) 16%,
+    rgba(247, 240, 232, 0) 84%,
+    rgba(247, 240, 232, 1) 100%
+  );
+}
+.brochure-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  max-width: 560px;
+}
+.brochure-content .eyebrow-head {
+  font-size: 42px;
+}
+.brochure-content h2 {
+  font-size: clamp(36px, 5vw, 58px);
+}
+.brochure-content p:not(.eyebrow-head) {
+  font-size: 18px;
+  max-width: 460px;
 }
 .become-dealer {
   position: relative;
@@ -489,6 +560,11 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 18px;
     margin-top: 40px;
+  }
+  .brochure {
+    min-height: 640px;
+    align-items: flex-start;
+    padding-top: 70px;
   }
   .become-dealer {
     min-height: 560px;
@@ -642,6 +718,12 @@
     /* border-radius: 22px; */
     gap: 24px;
   }
+  /* Flat 10px, overriding the clamp()'s 13px floor — the labels sit on a
+     circle whose diameter is capped by the viewport here, so they need to
+     go smaller than the fluid scale allows to stop wrapping. */
+  .painters-prefer-feature-title {
+    font-size: 10px;
+  }
   .why-choose-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -676,6 +758,24 @@
   }
   .product-card-media {
     aspect-ratio: 3 / 4.5;
+  }
+  .brochure {
+    min-height: 720px;
+    align-items: flex-start;
+    padding-top: 70px;
+  }
+  .brochure-content {
+    max-width: 100%;
+    gap: 16px;
+  }
+  .brochure-content .eyebrow-head {
+    font-size: 28px;
+  }
+  .brochure-content h2 {
+    font-size: clamp(30px, 9vw, 40px);
+  }
+  .brochure-content p:not(.eyebrow-head) {
+    font-size: 14px;
   }
   .become-dealer {
     min-height: 780px;
@@ -880,5 +980,562 @@
   .contact-info-card {
     padding: 24px 20px;
     border-radius: 20px;
+  }
+}
+
+.faq {
+  padding: 100px 0;
+  padding-top: 150px;
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 56px;
+  align-items: stretch;
+}
+.faq-media {
+  position: relative;
+  overflow: hidden;
+}
+.faq-media img {
+  /* Absolutely positioned so the <img> contributes no intrinsic height of
+     its own to the grid row's auto-sizing — otherwise the image's natural
+     aspect ratio (at the column's width) competes with .faq-content to set
+     the row height, instead of just matching it. With this, the row height
+     comes purely from .faq-content, and .faq-media (align-items: stretch)
+     matches it exactly — including live as the accordion's height animates
+     open/closed. */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.faq-list {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.faq-item {
+  border-bottom: 1px solid rgba(25, 37, 67, 0.12);
+}
+.faq-item:first-child {
+  border-top: 1px solid rgba(25, 37, 67, 0.12);
+}
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--brico);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 130%;
+  color: var(--head-black);
+}
+.faq-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--beige);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease;
+}
+.faq-question[aria-expanded="true"] .faq-icon {
+  transform: rotate(45deg);
+  background: var(--blue);
+  color: #fff;
+}
+.faq-answer {
+  height: 0;
+  overflow: hidden;
+}
+.faq-answer-inner {
+  padding: 0 4px 22px;
+}
+.faq-answer-inner p {
+  font-family: var(--inter);
+  font-size: 15px;
+  line-height: 155%;
+  color: var(--text-brown);
+}
+@media screen and (max-width: 991px) {
+  .faq {
+    padding: 70px 0;
+  }
+  .faq-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .faq-media {
+    display: none;
+  }
+}
+@media screen and (max-width: 767px) {
+  .faq {
+    padding: 50px 0;
+  }
+  .faq-question {
+    font-size: 15px;
+    padding: 18px 2px;
+  }
+  .faq-answer-inner {
+    padding: 0 2px 18px;
+  }
+  .faq-list {
+    margin-top: 26px;
+  }
+}
+
+.colour-inspiration {
+  position: relative;
+  width: 100%;
+  min-height: 640px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.colour-inspiration-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px 40px;
+  max-width: 420px;
+  box-shadow: 0 20px 50px rgba(25, 37, 67, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.colour-inspiration-card h2{
+  font-size: 46px;
+}
+.colour-inspiration-desc {
+  font-family: var(--inter);
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--text-brown);
+  max-width: 34ch;
+}
+.colour-inspiration-mood-label {
+  display: block;
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-brown);
+  opacity: 0.7;
+  margin-top: 10px;
+}
+.colour-inspiration-mood-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.colour-inspiration-mood-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px 8px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(25, 37, 67, 0.15);
+  background: #fff;
+  font-family: var(--inter);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--head-black);
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.colour-inspiration-mood-btn.is-active {
+  background: var(--beige);
+  border-color: var(--beige);
+  color: var(--head-black);
+}
+.colour-inspiration-mood-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.colour-inspiration-mood-icon svg {
+  width: 14px;
+  height: 14px;
+}
+.mood-accent-green {
+  background: var(--accent-green);
+  color: #fff;
+}
+.mood-accent-blue {
+  background: var(--accent-blue);
+  color: #fff;
+}
+.mood-accent-yellow {
+  background: #E9A93B;
+  color: #fff;
+}
+.colour-inspiration-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.colour-inspiration-media-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.colour-inspiration-media-layer.is-active {
+  opacity: 1;
+}
+.colour-inspiration-media-layer img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.colour-inspiration-caption {
+  position: absolute;
+  right: 6%;
+  bottom: 40px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 14px 22px 14px 14px;
+  box-shadow: 0 16px 40px rgba(25, 37, 67, 0.14);
+  max-width: min(360px, calc(100vw - 40px));
+}
+.colour-inspiration-caption-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.colour-inspiration-caption-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.colour-inspiration-caption-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.colour-inspiration-caption-text strong {
+  font-family: var(--brico);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--head-black);
+}
+.colour-inspiration-caption-text span {
+  font-family: var(--inter);
+  font-size: 13px;
+  color: var(--text-brown);
+}
+@media screen and (max-width: 991px) {
+  .colour-inspiration {
+    min-height: 700px;
+  }
+  .colour-inspiration-card {
+    max-width: 380px;
+    padding: 36px 30px;
+  }
+  .colour-inspiration-caption {
+    bottom: 24px;
+    padding: 12px 18px 12px 12px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .colour-inspiration {
+    min-height: 620px;
+    align-items: flex-end;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .colour-inspiration-card {
+    max-width: 100%;
+    padding: 26px 20px;
+    gap: 10px;
+  }
+  .colour-inspiration-card h2{
+    font-size: 26px;
+  }
+  .colour-inspiration-desc {
+    font-size: 14px;
+  }
+  .colour-inspiration-mood-btn {
+    font-size: 12px;
+    padding: 6px 12px 6px 6px;
+  }
+  .colour-inspiration-mood-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .colour-inspiration-mood-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+  .colour-inspiration-caption {
+    display: none;
+  }
+}
+
+.industries {
+  position: relative;
+  overflow: hidden;
+}
+.industries-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.industries-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.industries-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* rgba matches --body-color (#f7f0e8) — see .become-dealer-fade. */
+  background: linear-gradient(
+    180deg,
+    rgba(247, 240, 232, 1) 0%,
+    rgba(247, 240, 232, 0) 16%,
+    rgba(247, 240, 232, 0) 84%,
+    rgba(247, 240, 232, 1) 100%
+  );
+}
+.industries-pin {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+.industries-columns {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 90px;
+  width: 100%;
+}
+/* Intro and card deck each take half the row (both flex: 1 1 0), so the
+   deck can fill its half edge to edge rather than sitting in a fixed-width
+   column. */
+.industries-intro {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  /* Frosted panel so the copy stays legible over the busy background photo.
+     A translucent tint is painted alongside the blur — backdrop-filter only
+     blurs what's behind, it doesn't lighten it, so without the tint the
+     dark leaves/shadows would still read through at full contrast. */
+  padding: 40px 36px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 44px rgba(25, 37, 67, 0.08);
+}
+.industries-desc {
+  font-family: var(--inter);
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--text-brown);
+  max-width: 48ch;
+}
+/* Holds the whole stack: 5 strips' worth of already-revealed cards plus the
+   full height of the newest one at the bottom. Tall enough that the last
+   card is fully visible once every card has been revealed. */
+.industries-cards-window {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  height: 470px;
+}
+/* Absolutely positioned so cards can overlap into a deck — each card's
+   vertical slot and z-order come from Homepage.jsx, and GSAP owns the
+   transform, so no CSS `transform`/`top` offset here to conflict with it. */
+.industries-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Room for the icon badge, which hangs below the image into this gap. */
+  gap: 30px;
+  width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 24px 28px;
+  box-shadow: 0 -2px 24px rgba(25, 37, 67, 0.1);
+}
+/* No `overflow: hidden` here — the icon badge deliberately hangs past the
+   image's bottom edge, so the rounding lives on the <img> itself instead. */
+.industries-card-media {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  height: 230px;
+}
+.industries-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+.industries-card-icon {
+  position: absolute;
+  left: 50%;
+  bottom: -22px;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  border: 3px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.industries-card-icon svg {
+  width: 23px;
+  height: 23px;
+}
+.industries-card-text {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+.industries-card-title {
+  font-family: var(--brico);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--head-black);
+}
+.industries-card-desc {
+  font-family: var(--inter);
+  font-size: 14px;
+  line-height: 145%;
+  color: var(--text-brown);
+  opacity: 0.85;
+}
+/* Stays a two-column row down to the mobile breakpoint — only the sizes
+   tighten here, the layout itself doesn't change. */
+@media screen and (max-width: 1100px) {
+  .industries-columns {
+    gap: 44px;
+  }
+  .industries-intro {
+    padding: 32px 28px;
+  }
+  .industries-cards-window {
+    height: 410px;
+  }
+  .industries-card-media {
+    height: 185px;
+  }
+}
+@media screen and (max-width: 991px) {
+  .industries-columns {
+    gap: 30px;
+  }
+  .industries-intro {
+    padding: 26px 22px;
+  }
+  .industries-cards-window {
+    height: 360px;
+  }
+  .industries-card {
+    padding: 18px 18px 20px;
+    gap: 26px;
+  }
+  .industries-card-media {
+    height: 150px;
+  }
+  .industries-card-title {
+    font-size: 16px;
+  }
+  .industries-card-desc {
+    font-size: 13px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .industries-columns {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+  .industries-intro {
+    flex: 0 0 auto;
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+  .industries-cards-window {
+    flex: 0 0 auto;
+    height: 340px;
+  }
+  .industries-desc {
+    font-size: 14px;
+  }
+  .industries-card {
+    padding: 18px 18px 20px;
+    gap: 26px;
+  }
+  .industries-card-media {
+    height: 160px;
+  }
+  .industries-card-icon {
+    width: 40px;
+    height: 40px;
+    bottom: -19px;
+  }
+  .industries-card-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+  .industries-card-title {
+    font-size: 16px;
+  }
+  .industries-card-desc {
+    font-size: 13px;
   }
 }

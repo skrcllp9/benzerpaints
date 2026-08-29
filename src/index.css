@@ -21,6 +21,12 @@
      existing palette. */
   --accent-orange: #d57f45;
   --accent-green: #39b54a;
+  /* Not sourced from --brand-gradient (it has no blue/yellow stops) — added
+     specifically for the colour-mood picker's Calm/Bright icons, which need
+     to read as true blue/yellow rather than the site's navy --blue or
+     terracotta --accent-orange. */
+  --accent-blue: #3b76e0;
+  --accent-yellow: #f0a93c;
 }
 * {
   margin: 0;
@@ -59,7 +65,7 @@ h6 {
   font-weight: 700;
 }
 h2 {
-  font-size: clamp(32px, 6vw, 58px);
+  font-size: clamp(32px, 4.5vw, 58px);
   letter-spacing: -0.03em;
   font-weight: 700;
   line-height: 100%;

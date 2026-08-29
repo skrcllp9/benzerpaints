@@ -37,7 +37,8 @@ const SLIDES = [
   },
 ];
 
-const DWELL = 3.2;
+// How long each slide holds before the next one starts wiping in (3500ms).
+const DWELL = 3.5;
 const NUM_BARS = 9;
 const BAR_DURATION = 0.75;
 const BAR_STAGGER = 0.08;
