@@ -292,7 +292,11 @@
   -webkit-text-fill-color: transparent;
   text-decoration-color: var(--blue);
 }
-
+@media screen and (max-width: 991px) {
+  .site-footer-credit a{
+    font-size: 13px;
+  }
+}
 @media screen and (max-width: 767px) {
   .site-footer {
     padding: 48px 0 24px;

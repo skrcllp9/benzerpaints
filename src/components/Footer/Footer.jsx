@@ -90,7 +90,7 @@ const Footer = () => {
 
           <div className="site-footer-cta-row">
             <a
-              href="/brochure/benzer-paints-brochure.pdf"
+              href="/assets/BenzerPaints-Brochure.pdf"
               className="site-footer-brochure"
               download
             >

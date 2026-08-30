@@ -1102,7 +1102,7 @@ const Homepage = () => {
             </h2>
             <p>Know more about our products, finishes and applications.</p>
             <a
-              href="/brochure/benzer-paints-brochure.pdf"
+              href="/assets/BenzerPaints-Brochure.pdf"
               className="primary-btn"
               download
             >
