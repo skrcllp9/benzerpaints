@@ -1859,6 +1859,9 @@
   opacity: 0.75;
   margin-top: -6px;
 }
+.dealer-inquiry-container{
+  padding-top: 40px;
+}
 @media screen and (max-width: 991px) {
   /* The mobile header runs taller here than the base padding-top accounts
      for, so the stacked layout needs its own explicit clearance. */
@@ -1900,5 +1903,8 @@
   }
   .dealer-info-panel {
   padding-top: 0px;
+  }
+  .dealer-inquiry-container{
+    padding-top: 0px;
   }
 }
