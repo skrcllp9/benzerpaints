@@ -1369,6 +1369,11 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 18px 44px rgba(25, 37, 67, 0.08);
+  /* This sits inside a pinned (fixed-during-scroll) section, so like the
+     header's backdrop-filter it needs its own compositor layer or Safari
+     recomputes the blur against the animating cards next to it every
+     scrub frame. */
+  transform: translateZ(0);
 }
 .industries-desc {
   font-family: var(--inter);
@@ -1458,6 +1463,32 @@
   color: var(--text-brown);
   opacity: 0.85;
 }
+/* Only the mobile carousel (see the 767px block below) needs prev/next
+   controls — desktop/tablet keep the pinned stacking deck instead. Same
+   design as the (currently unused) testimonial section's nav buttons. */
+.industries-nav {
+  display: none;
+}
+.industries-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(25, 37, 67, 0.3);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--head-black);
+  cursor: pointer;
+  background-color: #fff;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+.industries-nav-btn:hover {
+  background: var(--head-black);
+  color: #fff;
+}
 /* Stays a two-column row down to the mobile breakpoint — only the sizes
    tighten here, the layout itself doesn't change. */
 @media screen and (max-width: 1100px) {
@@ -1499,6 +1530,13 @@
   }
 }
 @media screen and (max-width: 767px) {
+  /* No pin on mobile — the section just flows with the page at its natural
+     content height instead of locking to a full viewport height. */
+  .industries-pin {
+    height: auto;
+    display: block;
+    padding: 60px 0;
+  }
   .industries-columns {
     flex-direction: column;
     align-items: stretch;
@@ -1509,14 +1547,37 @@
     padding: 28px 22px;
     border-radius: 20px;
   }
+  /* Cards swap from the desktop stacking deck to a swipeable horizontal
+     carousel — scroll-snap needs no JS and works with touch out of the
+     box; the prev/next buttons below just nudge it by one viewport. */
   .industries-cards-window {
     flex: 0 0 auto;
-    height: 340px;
+    height: auto;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 16px;
+    padding-bottom: 4px;
+  }
+  .industries-cards-window::-webkit-scrollbar {
+    display: none;
+  }
+  .industries-nav {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 18px;
   }
   .industries-desc {
     font-size: 14px;
   }
   .industries-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(300px, 80vw);
+    scroll-snap-align: start;
     padding: 18px 18px 20px;
     gap: 26px;
   }

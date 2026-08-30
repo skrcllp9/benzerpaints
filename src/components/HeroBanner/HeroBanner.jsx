@@ -73,6 +73,7 @@ const buildBarsClip = (bars) => {
 };
 
 const HeroBanner = () => {
+  const sectionRef = useRef(null);
   const slideRefs = useRef([]);
   const progressRef = useRef(null);
   const headingRef = useRef(null);
@@ -92,6 +93,27 @@ const HeroBanner = () => {
     let progressTween = null;
     let textTl = null;
     let entranceTl = null;
+
+    // This loop otherwise keeps scheduling new slide transitions forever,
+    // off-screen included, each repainting a 9-bar clip-path wipe — real
+    // main-thread work competing with scroll elsewhere on the page once
+    // the hero has scrolled out of view. Only the scheduler (dwellCall) is
+    // paused/resumed here — never transitionTl/textTl/entranceTl. Those
+    // animate the actual heading/desc opacity and clip-path bars; pausing
+    // one of them mid-fade and resuming it later is what left the hero
+    // text stuck invisible after a transition got interrupted by a scroll
+    // away-and-back. Freezing only the timer means any transition already
+    // in flight when you scroll away just finishes on its own (~1.8s,
+    // harmless) — no new one gets scheduled until you scroll back.
+    let visibilityObserver = null;
+    if (typeof IntersectionObserver !== "undefined" && sectionRef.current) {
+      visibilityObserver = new IntersectionObserver(([entry]) => {
+        if (!dwellCall) return;
+        if (entry.isIntersecting) dwellCall.resume();
+        else dwellCall.pause();
+      });
+      visibilityObserver.observe(sectionRef.current);
+    }
 
     // Crossfades the heading/desc out (through a light blur, matching the
     // scroll-reveal treatment used for headings elsewhere on the page),
@@ -154,6 +176,7 @@ const HeroBanner = () => {
 
       return () => {
         cancelled = true;
+        visibilityObserver?.disconnect();
         dwellCall?.kill();
         textTl?.kill();
         entranceTl?.kill();
@@ -214,6 +237,7 @@ const HeroBanner = () => {
 
     return () => {
       cancelled = true;
+      visibilityObserver?.disconnect();
       dwellCall?.kill();
       transitionTl?.kill();
       progressTween?.kill();
@@ -223,7 +247,7 @@ const HeroBanner = () => {
   }, []);
 
   return (
-    <section className="hero-carousel">
+    <section className="hero-carousel" ref={sectionRef}>
       <div className="hero-carousel-stage">
         {SLIDES.map((slide, i) => (
           <picture key={slide.base}>

@@ -21,10 +21,17 @@
   gap: 24px;
   padding: 10px 12px 10px 24px;
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 8px 30px rgba(25, 37, 67, 0.1);
+  /* Forces its own compositor layer. Safari recomputes a fixed element's
+     backdrop-filter against the scrolling content behind it far more
+     expensively than Chromium does; without a promoted layer that
+     recompute happens on the main thread every scroll frame, which is what
+     reads as jitter in Safari specifically. */
+  transform: translateZ(0);
+  will-change: transform, backdrop-filter;
 }
 .site-header-logo {
   display: flex;
@@ -118,7 +125,23 @@
 .site-header-overlay {
   position: fixed;
   inset: 0;
-  z-index: 55;
+  /* Portaled to <body> (see Header.jsx), so this is no longer a descendant
+     of .site-header's own stacking context (position: fixed + z-index: 50
+     makes it one) — its z-index now has to beat the *whole* header
+     subtree's 50 to sit above page content while still losing to it, so
+     the header bar (56) and mobile nav (60) stay on top instead of
+     getting dimmed along with everything else. */
+  z-index: 40;
+  background: rgba(16, 20, 30, 0.5);
+  animation: site-header-overlay-in 0.3s ease forwards;
+}
+@keyframes site-header-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @media screen and (max-width: 991px) {
@@ -146,7 +169,7 @@
     left: 20px;
     right: 20px;
     max-height: calc(100dvh - 120px);
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.90);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.14);

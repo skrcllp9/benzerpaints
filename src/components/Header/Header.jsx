@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -162,13 +163,22 @@ const Header = () => {
         </a>
       </nav>
 
-      {menuOpen && (
-        <div
-          className="site-header-overlay"
-          onClick={() => setMenuOpen(false)}
-          aria-hidden="true"
-        />
-      )}
+      {menuOpen &&
+        createPortal(
+          // Portaled straight to <body> — .site-header has `will-change:
+          // transform` (needed for the scroll-hide animation above), which
+          // makes it the containing block for any `position: fixed`
+          // descendant. Left nested here, this overlay's `inset: 0` would
+          // resolve against the header's own small box instead of the
+          // viewport, only dimming the area behind the header bar instead
+          // of the whole page.
+          <div
+            className="site-header-overlay"
+            onClick={() => setMenuOpen(false)}
+            aria-hidden="true"
+          />,
+          document.body
+        )}
     </header>
   );
 };

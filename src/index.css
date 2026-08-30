@@ -51,6 +51,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   text-rendering: optimizeLegibility;
+  /* Safari's native elastic overscroll fights Lenis's own JS-driven scroll
+     position on every frame near the top/bottom of the page, which is the
+     main source of the scroll jitter that only shows up in Safari (Chromium
+     doesn't rubber-band the same way). Disabling the native bounce lets
+     Lenis own the motion outright. */
+  overscroll-behavior-y: none;
 }
 
 h1,

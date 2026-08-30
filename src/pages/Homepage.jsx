@@ -63,7 +63,7 @@ const PlusIcon = () => (
 // Icon colors rotate through our existing palette (no new hues introduced)
 // so the four cards read distinctly without going off-brand.
 const WHY_CHOOSE_FEATURES = [
-  { title: "28+ Years of Expertise", desc: "Nearly three decades of experience you can rely on.", accent: "orange", icon: <CalendarIcon /> },
+  { title: "30+ Years of Expertise", desc: "More than three decades of experience you can rely on.", accent: "orange", icon: <CalendarIcon /> },
   { title: "High Performance Products", desc: "Advanced formulations for long-lasting results.", accent: "blue", icon: <ShieldIcon /> },
   { title: "Wide Range of Solutions", desc: "Complete range for paints, coatings & construction needs.", accent: "skyblue", icon: <SwatchIcon /> },
   { title: "Expert Support You Can Count On", desc: "Dedicated support at every step of the way.", accent: "brown", icon: <HeadsetIcon /> },
@@ -212,9 +212,9 @@ const MOOD_OPTIONS = [
     caption: "Green tones for a natural feel",
     accent: "green",
     icon: <LeafIcon />,
-    desktop: "/images/nature-desktop.png",
-    tab: "/images/nature-tab.png",
-    mob: "/images/nature-mobile.png",
+    desktop: "/images/nature-desktop.jpg",
+    tab: "/images/nature-tab.jpg",
+    mob: "/images/nature-mobile.jpg",
   },
   {
     key: "calm",
@@ -222,9 +222,9 @@ const MOOD_OPTIONS = [
     caption: "Blue tones for a calming feel",
     accent: "blue",
     icon: <WaterDropIcon />,
-    desktop: "/images/calm-desktop.png",
-    tab: "/images/calm-tab.png",
-    mob: "/images/calm-mob.png",
+    desktop: "/images/calm-desktop.jpg",
+    tab: "/images/calm-tab.jpg",
+    mob: "/images/calm-mob.jpg",
   },
   {
     key: "bright",
@@ -232,9 +232,9 @@ const MOOD_OPTIONS = [
     caption: "Warm yellow tones for a bright, sunny feel",
     accent: "yellow",
     icon: <SunIcon />,
-    desktop: "/images/bright-desktop.png",
-    tab: "/images/bright-tab.png",
-    mob: "/images/bright-mob.png",
+    desktop: "/images/bright-desktop.jpg",
+    tab: "/images/bright-tab.jpg",
+    mob: "/images/bright-mob.jpg",
   },
 ];
 
@@ -339,6 +339,7 @@ const Homepage = () => {
   const moodCaptionRef = useRef(null);
   const industriesPinRef = useRef(null);
   const industryCardRefs = useRef([]);
+  const industriesTrackRef = useRef(null);
 
   useEffect(() => {
     // Pinned horizontal-scroll card gallery, on every screen size — the
@@ -399,13 +400,25 @@ const Homepage = () => {
     const build = () => {
       if (ctx) ctx.revert();
 
+      // Mobile drops the pin/stacking-deck entirely in favor of a plain
+      // horizontal carousel (see .industries-cards-window's mobile CSS) —
+      // no scroll-jacking, no viewport-height pin. GSAP's only job here is
+      // to clear any inline transform/opacity/z-index a previous
+      // desktop-width build left behind on these same card elements before
+      // a resize crossed the breakpoint.
+      if (window.innerWidth <= 767) {
+        ctx = gsap.context(() => {
+          gsap.set(cards, { clearProps: "all" });
+        }, industriesPinRef);
+        return;
+      }
+
       ctx = gsap.context(() => {
         // How much of each already-revealed card stays visible above the
-        // one covering it. Smaller on mobile, where the cards are shorter.
-        // Kept under the card's own top padding (20px desktop / 16px
-        // mobile) so a covered card shows only the blank white sliver above
-        // its title — never a clipped line of text.
-        const strip = window.innerWidth <= 767 ? 12 : 16;
+        // one covering it. Kept under the card's own top padding (20px) so
+        // a covered card shows only the blank white sliver above its
+        // title — never a clipped line of text.
+        const strip = 16;
         const restY = (j) => j * strip;
 
         cards.forEach((el, j) => {
@@ -453,8 +466,9 @@ const Homepage = () => {
 
     build();
 
-    // The strip size changes at the mobile breakpoint, so the slots have to
-    // be recomputed rather than left stale after a resize.
+    // Crossing the mobile breakpoint swaps the whole layout (pinned deck vs
+    // plain carousel), so a resize has to rebuild rather than leave the
+    // previous mode's state stale.
     let resizeTimer;
     const onResize = () => {
       clearTimeout(resizeTimer);
@@ -842,6 +856,14 @@ const Homepage = () => {
     }
   }, [activeMood]);
 
+  // Mobile-only carousel nav (see .industries-nav) — desktop/tablet keep the
+  // pinned stacking deck and never render/use these buttons.
+  const scrollIndustries = (dir) => {
+    const el = industriesTrackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: "smooth" });
+  };
+
   return (
     <>
       <HeroBanner />
@@ -859,7 +881,7 @@ const Homepage = () => {
               Proven Performance.
             </h2>
             <p className="why-choose-desc">
-              With over <strong>28 years</strong> of expertise, Benzer Paints delivers
+              With over <strong>30 years</strong> of expertise, Benzer Paints delivers
               innovative, high-performance, and eco-friendly solutions that beautify
               and protect every space.
             </p>
@@ -980,9 +1002,9 @@ const Homepage = () => {
         <div className="industries-pin" ref={industriesPinRef}>
           <div className="industries-bg">
             <picture>
-              <source media="(max-width: 767px)" srcSet="/images/industries-mob.png" />
-              <source media="(max-width: 991px)" srcSet="/images/industries-tab.png" />
-              <img src="/images/industries-bg.png" alt="" loading="lazy" />
+              <source media="(max-width: 767px)" srcSet="/images/industries-mob.jpg" />
+              <source media="(max-width: 991px)" srcSet="/images/industries-tab.jpg" />
+              <img src="/images/industries-bg.jpg" alt="" loading="lazy" />
             </picture>
           </div>
           <div className="industries-fade" aria-hidden="true" />
@@ -1011,7 +1033,7 @@ const Homepage = () => {
               </p>
             </div>
 
-            <div className="industries-cards-window">
+            <div className="industries-cards-window" ref={industriesTrackRef}>
               {INDUSTRY_CARDS.map((card, i) => (
                 <div
                   className="industries-card"
@@ -1029,15 +1051,42 @@ const Homepage = () => {
                 </div>
               ))}
             </div>
+
+            {/* Mobile-only carousel controls — hidden above 767px (see
+                .industries-nav), where the pinned stacking deck is used
+                instead. Same button design as the (currently unused)
+                testimonial section's .testimonial-nav-btn. */}
+            <div className="industries-nav">
+              <button
+                type="button"
+                className="industries-nav-btn"
+                aria-label="Previous industry"
+                onClick={() => scrollIndustries(-1)}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                  <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className="industries-nav-btn"
+                aria-label="Next industry"
+                onClick={() => scrollIndustries(1)}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="brochure">
         <picture className="brochure-media">
-          <source media="(max-width: 767px)" srcSet="/images/brochuremobile.png" />
-          <source media="(max-width: 991px)" srcSet="/images/brochuremobile.png" />
-          <img src="/images/brochure-desktop.png" alt="" loading="lazy" />
+          <source media="(max-width: 767px)" srcSet="/images/bros-mob.jpg" />
+          <source media="(max-width: 991px)" srcSet="/images/bros-tab.jpg" />
+          <img src="/images/bros-desk.jpg" alt="" loading="lazy" />
         </picture>
         <div className="brochure-fade" aria-hidden="true" />
         <div className="container">
@@ -1146,8 +1195,8 @@ const Homepage = () => {
 
       <section className="become-dealer">
         <picture className="become-dealer-media">
-          <source media="(max-width: 767px)" srcSet="/images/become-dealer-bg-mob.png" />
-          <img src="/images/become-dealer-bg.png" alt="" loading="lazy" />
+          <source media="(max-width: 767px)" srcSet="/images/become-dealer-bg-mob.jpg" />
+          <img src="/images/become-dealer-bg.jpg" alt="" loading="lazy" />
         </picture>
         <div className="become-dealer-fade" aria-hidden="true" />
         <div className="container">
