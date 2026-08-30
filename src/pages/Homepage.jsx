@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import HeroBanner from "../components/HeroBanner/HeroBanner";
@@ -1214,9 +1215,9 @@ const Homepage = () => {
               Join our growing network of dealers and distributors across
               India and grow your business with Benzer Paints.
             </p>
-            <a href="#dealer-inquiry" className="primary-btn">
+            <Link to="/dealer-inquiry" className="primary-btn">
               Apply Now
-            </a>
+            </Link>
           </div>
         </div>
       </section>

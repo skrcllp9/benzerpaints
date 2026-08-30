@@ -96,9 +96,9 @@ const Footer = () => {
             >
               Download Brochure
             </a>
-            <a href="#dealer-inquiry" className="primary-btn blue">
+            <Link to="/dealer-inquiry" className="primary-btn blue">
               Dealers Inquiry
-            </a>
+            </Link>
           </div>
         </div>
 

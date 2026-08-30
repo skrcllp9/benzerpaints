@@ -114,9 +114,9 @@ const Header = () => {
         </nav>
 
         <div className="site-header-actions">
-          <a href="#dealer-inquiry" className="primary-btn site-header-cta blue">
+          <Link to="/dealer-inquiry" className="primary-btn site-header-cta blue">
             Dealers Inquiry
-          </a>
+          </Link>
           <button
             type="button"
             className={`site-header-toggle ${menuOpen ? "is-open" : ""}`}
@@ -154,13 +154,13 @@ const Header = () => {
             </li>
           ))}
         </ul>
-        <a
-          href="#dealer-inquiry"
+        <Link
+          to="/dealer-inquiry"
           className="primary-btn blue site-header-cta-drawer"
           onClick={() => setMenuOpen(false)}
         >
           Dealers Inquiry
-        </a>
+        </Link>
       </nav>
 
       {menuOpen &&
