@@ -119,14 +119,14 @@ const Footer = () => {
 
           <div className="site-footer-contact">
             <a href="mailto:info@benzerpaints.com">info@benzerpaints.com</a>
-            <a href="tel:+911204618033">+91 120 4618033</a>
+            <a href="tel:+917391074994">7391074994</a>
             <a
               href="https://maps.app.goo.gl/DLCfuGjcBzk6KdLr9"
               target="_blank"
               rel="noopener noreferrer"
             >
-              S.NO 133/2 Bhadle Vasti, Tal Haveli, Uruli Devachi, <br />Pune,
-              Maharashtra 412308
+              First Floor, Office No.1, Survey No. 133/2, Pune Saswad Road,
+              Bhadalewasti, Uruli Devachi, Pune, Maharashtra 412308, India
             </a>
           </div>
 

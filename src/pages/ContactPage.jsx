@@ -35,11 +35,17 @@ const PinIcon = () => (
 // and the footer never drift apart. Address links to the same Google Maps
 // URL already used there.
 const CONTACT_INFO = [
-  { label: "Phone", value: "+91 120 4618033", href: "tel:+911204618033", icon: <PhoneIcon /> },
+  {
+    label: "Customer Support",
+    value: "7391074994 (10:00 AM – 5:00 PM)",
+    href: "tel:+917391074994",
+    icon: <PhoneIcon />,
+  },
   { label: "Email", value: "info@benzerpaints.com", href: "mailto:info@benzerpaints.com", icon: <MailIcon /> },
   {
     label: "Address",
-    value: "S.NO 133/2 Bhadle Vasti, Tal Haveli, Uruli Devachi, Pune, Maharashtra 412308",
+    value:
+      "First Floor, Office No.1, Survey No. 133/2, Pune Saswad Road, Bhadalewasti, Uruli Devachi, Pune, Maharashtra 412308, India",
     href: "https://maps.app.goo.gl/DLCfuGjcBzk6KdLr9",
     icon: <PinIcon />,
   },
