@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { INDIA_STATES } from "../data/indiaLocations";
+import { submitDealerEnquiry } from "../lib/dealerEnquiries";
 
-const SendIcon = () => (
-  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-    <path d="M3.4 20.6 21 12 3.4 3.4 3 10l12 2-12 2Z" />
+const ArrowIcon = () => (
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
+    <path d="M4.5 12h15M13 5.5 19.5 12 13 18.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -87,6 +88,8 @@ const EMPTY_FORM = {
 const DealerInquiryPage = () => {
   const [form, setForm] = useState(EMPTY_FORM);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const headingRef = useRef(null);
   const formRef = useRef(null);
@@ -153,6 +156,13 @@ const DealerInquiryPage = () => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Digits only, capped at 10 — the +91 prefix is fixed in the UI, so the
+  // field itself only ever holds the local number.
+  const handleMobileChange = (e) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setForm((prev) => ({ ...prev, mobile: digits }));
+  };
+
   const goToStep2 = () => {
     if (formRef.current && !formRef.current.reportValidity()) return;
     setStep(2);
@@ -160,13 +170,20 @@ const DealerInquiryPage = () => {
 
   const goToStep1 = () => setStep(1);
 
-  // No backend to send this to yet — this just validates the interaction
-  // client-side. Wire up a real submit handler once there's an endpoint.
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setForm(EMPTY_FORM);
-    setStep(1);
+    setError("");
+    setSubmitting(true);
+    try {
+      await submitDealerEnquiry(form);
+      setSubmitted(true);
+      setForm(EMPTY_FORM);
+      setStep(1);
+    } catch {
+      setError("Something went wrong submitting your inquiry. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -209,6 +226,18 @@ const DealerInquiryPage = () => {
             with you shortly.
           </p>
 
+          <div className="dealer-form-steps" role="list" aria-label={`Step ${step} of 2`}>
+            <div className={`dealer-form-step-item ${step >= 1 ? "is-active" : ""}`} role="listitem">
+              <span className="dealer-form-step-index">1</span>
+              <span className="dealer-form-step-label">Contact Details</span>
+            </div>
+            <span className={`dealer-form-step-line ${step >= 2 ? "is-active" : ""}`} aria-hidden="true" />
+            <div className={`dealer-form-step-item ${step >= 2 ? "is-active" : ""}`} role="listitem">
+              <span className="dealer-form-step-index">2</span>
+              <span className="dealer-form-step-label">Business Details</span>
+            </div>
+          </div>
+
           <form className="dealer-form" onSubmit={handleSubmit} ref={formRef}>
             {step === 1 && (
               <div className="dealer-form-step">
@@ -231,14 +260,21 @@ const DealerInquiryPage = () => {
                     <label htmlFor="mobile">
                       Mobile Number <span className="req">*</span>
                     </label>
-                    <input
-                      id="mobile"
-                      type="tel"
-                      placeholder="Enter mobile number"
-                      value={form.mobile}
-                      onChange={handleChange("mobile")}
-                      required
-                    />
+                    <div className="phone-input-wrap">
+                      <span className="phone-input-prefix">+91</span>
+                      <input
+                        id="mobile"
+                        type="tel"
+                        inputMode="numeric"
+                        placeholder="10-digit mobile number"
+                        value={form.mobile}
+                        onChange={handleMobileChange}
+                        maxLength={10}
+                        pattern="[0-9]{10}"
+                        title="Enter a 10-digit mobile number"
+                        required
+                      />
+                    </div>
                   </div>
                   <div className="dealer-field">
                     <label htmlFor="email">
@@ -311,7 +347,10 @@ const DealerInquiryPage = () => {
                 </div>
 
                 <button type="button" className="dealer-submit" onClick={goToStep2}>
-                  Next: Business Details <SendIcon />
+                  Next
+                  <span className="dealer-submit-arrow">
+                    <ArrowIcon />
+                  </span>
                 </button>
               </div>
             )}
@@ -405,12 +444,17 @@ const DealerInquiryPage = () => {
                   />
                 </div>
 
+                {error && <p className="job-application-error">{error}</p>}
+
                 <div className="dealer-step-actions">
                   <button type="button" className="dealer-step-back" onClick={goToStep1}>
                     <BackArrowIcon /> Back
                   </button>
-                  <button type="submit" className="dealer-submit">
-                    <SendIcon /> Submit Inquiry
+                  <button type="submit" className="dealer-submit" disabled={submitting}>
+                    {submitting ? "Submitting…" : "Submit Inquiry"}
+                    <span className="dealer-submit-arrow">
+                      <ArrowIcon />
+                    </span>
                   </button>
                 </div>
 

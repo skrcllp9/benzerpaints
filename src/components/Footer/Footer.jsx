@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useBrochureUrl } from "../../hooks/useBrochureUrl";
 import "./footer.css";
 
 const HeartIcon = () => (
@@ -64,14 +65,15 @@ const SOCIAL_LINKS = [
 const FOOTER_LINKS = [
   { label: "About Us", href: "#" },
   { label: "Products", href: "#" },
-  { label: "Career", href: "#" },
-  { label: "Blogs", href: "#" },
+  { label: "Career", href: "/career" },
+  { label: "Blogs", href: "/blogs" },
   { label: "FAQs", href: "#" },
   { label: "Contact Us", href: "/contact" },
 ];
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const brochureUrl = useBrochureUrl();
 
   return (
     <footer className="site-footer">
@@ -89,11 +91,7 @@ const Footer = () => {
           </div>
 
           <div className="site-footer-cta-row">
-            <a
-              href="/assets/BenzerPaints-Brochure.pdf"
-              className="site-footer-brochure"
-              download
-            >
+            <a href={brochureUrl} className="site-footer-brochure" download>
               Download Brochure
             </a>
             <Link to="/dealer-inquiry" className="primary-btn blue">
