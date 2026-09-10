@@ -1,0 +1,14 @@
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  // Fails loudly at startup instead of every individual query failing with
+  // an opaque network error once someone forgets to set up .env.local.
+  throw new Error(
+    "Missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY — copy .env.example to .env.local and fill them in from the Supabase dashboard."
+  );
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);

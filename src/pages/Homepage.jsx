@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import HeroBanner from "../components/HeroBanner/HeroBanner";
+import { useBrochureUrl } from "../hooks/useBrochureUrl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -331,6 +332,7 @@ const INDUSTRY_CARDS = [
 ];
 
 const Homepage = () => {
+  const brochureUrl = useBrochureUrl();
   const productsPinRef = useRef(null);
   const productsTrackRef = useRef(null);
   const [openFaq, setOpenFaq] = useState(0);
@@ -1102,11 +1104,7 @@ const Homepage = () => {
               Product Brochure
             </h2>
             <p>Know more about our products, finishes and applications.</p>
-            <a
-              href="/assets/BenzerPaints-Brochure.pdf"
-              className="primary-btn"
-              download
-            >
+            <a href={brochureUrl} className="primary-btn" download>
               Download Brochure
             </a>
           </div>

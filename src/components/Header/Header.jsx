@@ -19,8 +19,8 @@ const NAV_LINKS = [
   { label: "About Us", href: "#" },
   { label: "Products", href: "#" },
   { label: "Contact Us", href: "/contact" },
-  { label: "Blogs", href: "#" },
-  { label: "Career", href: "#" },
+  { label: "Blogs", href: "/blogs" },
+  { label: "Career", href: "/career" },
 ];
 
 const Header = () => {

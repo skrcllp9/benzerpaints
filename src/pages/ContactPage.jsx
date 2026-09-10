@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { submitContactEnquiry } from "../lib/contactEnquiries";
 
 const PhoneIcon = () => (
   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
@@ -56,6 +57,8 @@ const EMPTY_FORM = { firstName: "", lastName: "", email: "", phone: "", message:
 const ContactPage = () => {
   const [form, setForm] = useState(EMPTY_FORM);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const headingRef = useRef(null);
 
   useEffect(() => {
@@ -84,12 +87,26 @@ const ContactPage = () => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  // No backend to send this to yet — this just validates the interaction
-  // client-side. Wire up a real submit handler once there's an endpoint.
-  const handleSubmit = (e) => {
+  // Digits only, capped at 10 — the +91 prefix is fixed in the UI, so the
+  // field itself only ever holds the local number.
+  const handlePhoneChange = (e) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setForm((prev) => ({ ...prev, phone: digits }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setForm(EMPTY_FORM);
+    setError("");
+    setSubmitting(true);
+    try {
+      await submitContactEnquiry(form);
+      setSubmitted(true);
+      setForm(EMPTY_FORM);
+    } catch {
+      setError("Something went wrong sending your message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -184,13 +201,20 @@ const ContactPage = () => {
                 </div>
                 <div className="contact-field">
                   <label htmlFor="phone">Phone</label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    placeholder="Phone Number"
-                    value={form.phone}
-                    onChange={handleChange("phone")}
-                  />
+                  <div className="phone-input-wrap">
+                    <span className="phone-input-prefix">+91</span>
+                    <input
+                      id="phone"
+                      type="tel"
+                      inputMode="numeric"
+                      placeholder="10-digit mobile number"
+                      value={form.phone}
+                      onChange={handlePhoneChange}
+                      maxLength={10}
+                      pattern="[0-9]{10}"
+                      title="Enter a 10-digit mobile number"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -205,8 +229,10 @@ const ContactPage = () => {
                 />
               </div>
 
-              <button type="submit" className="primary-btn blue contact-submit">
-                Send Message
+              {error && <p className="job-application-error">{error}</p>}
+
+              <button type="submit" className="primary-btn blue contact-submit" disabled={submitting}>
+                {submitting ? "Sending…" : "Send Message"}
               </button>
 
               {submitted && (
