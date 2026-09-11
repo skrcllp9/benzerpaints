@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useAdminAuth } from "../../context/adminAuthStore";
 import "./admin.css";
 
@@ -61,10 +61,16 @@ const AdminLoginPage = () => {
 
           {error && <p className="admin-alert admin-alert-error">{error}</p>}
 
-          <button type="submit" className="admin-btn admin-btn-primary" disabled={submitting}>
+          <button type="submit" className="admin-btn admin-btn-primary admin-login-submit" disabled={submitting}>
             {submitting ? "Signing in…" : "Sign In"}
           </button>
         </form>
+      </div>
+
+      <div className="admin-login-back">
+        <Link to="/" className="primary-btn blue">
+          Back to Website
+        </Link>
       </div>
     </div>
   );
