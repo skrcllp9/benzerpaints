@@ -123,7 +123,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              First Floor, Office No.1, Survey No. 133/2, Pune Saswad Road,
+              First Floor, Office No.1, Survey No. 133/2, Pune Saswad Road,<br />
               Bhadalewasti, Uruli Devachi, Pune, Maharashtra 412308, India
             </a>
           </div>
