@@ -1,0 +1,299 @@
+.product-catalogue {
+  padding-bottom: 110px;
+}
+
+/* Range tabs */
+.product-catalogue-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.product-catalogue-tab {
+  /* Selected-state palette. Each range overrides it below; the default
+     (used by Select) is the brand blue. */
+  --tab-accent: var(--blue);
+  --tab-on-accent: #fff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  border: 1px solid rgba(16, 31, 76, 0.14);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--head-black);
+  font-family: var(--inter);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+/* Premium (Camel) selects gold — dark text, since white on gold is too faint. */
+.product-catalogue-tab--premium {
+  --tab-accent: #d4a437;
+  --tab-on-accent: var(--head-black);
+}
+/* Prestige (Alfa, Crome & Arco) selects the Alfa label purple. */
+.product-catalogue-tab--prestige {
+  --tab-accent: #520c36;
+}
+.product-catalogue-tab:hover {
+  border-color: var(--tab-accent);
+}
+.product-catalogue-tab:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 3px;
+}
+.product-catalogue-tab.is-active {
+  background-color: var(--tab-accent);
+  border-color: var(--tab-accent);
+  color: var(--tab-on-accent);
+}
+.product-catalogue-tab-number {
+  font-family: var(--brico);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: -0.02em;
+  opacity: 0.35;
+  transition: opacity 0.35s ease;
+}
+.product-catalogue-tab.is-active .product-catalogue-tab-number {
+  opacity: 1;
+}
+.product-catalogue-tab-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.product-catalogue-tab-tier {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  line-height: 100%;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.product-catalogue-tab-name {
+  font-family: var(--brico);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 115%;
+}
+
+/* Panel */
+.product-catalogue-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
+  gap: 50px;
+  background-color: #fff;
+  border-radius: 28px;
+  padding: 50px;
+  /* Holds the section's height steady between ranges of different length
+     so the page below doesn't jump when a shorter range is selected. */
+  min-height: 470px;
+}
+.product-catalogue-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.product-catalogue-range-label {
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  line-height: 100%;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+}
+.product-catalogue-aside h3 {
+  font-size: clamp(26px, 2.8vw, 38px);
+  line-height: 105%;
+  letter-spacing: -0.02em;
+}
+.product-catalogue-aside p {
+  font-family: var(--inter);
+  font-size: 15px;
+  line-height: 150%;
+}
+.product-catalogue-brands,
+.product-catalogue-packs,
+.product-catalogue-items {
+  list-style: none;
+}
+.product-catalogue-brands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.product-catalogue-brands li {
+  padding: 7px 14px;
+  border: 1px solid var(--head-black);
+  border-radius: 20px;
+  font-family: var(--inter);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0.04em;
+  color: var(--head-black);
+}
+
+.product-catalogue-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  min-width: 0;
+}
+.product-catalogue-group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(62, 44, 37, 0.14);
+}
+.product-catalogue-group-head h4 {
+  font-size: 20px;
+  line-height: 110%;
+  letter-spacing: -0.01em;
+}
+.product-catalogue-packs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.product-catalogue-packs li {
+  padding: 5px 9px;
+  border-radius: 8px;
+  background-color: var(--body-color);
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 100%;
+  color: var(--text-brown);
+}
+.product-catalogue-items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.product-catalogue-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background-color: var(--body-color);
+  font-family: var(--inter);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 125%;
+  color: var(--head-black);
+}
+.product-catalogue-item-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+}
+
+@media screen and (max-width: 1200px) {
+  .product-catalogue-panel {
+    gap: 36px;
+    padding: 40px;
+  }
+  .product-catalogue-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media screen and (max-width: 991px) {
+  .product-catalogue {
+    padding-bottom: 90px;
+  }
+  .product-catalogue-tab {
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .product-catalogue-tab-number {
+    font-size: 22px;
+  }
+  .product-catalogue-tab-name {
+    font-size: 15px;
+  }
+  .product-catalogue-panel {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 30px;
+    min-height: 0;
+  }
+  .product-catalogue-items {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .product-catalogue-item {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .product-catalogue {
+    padding-bottom: 70px;
+  }
+  .product-catalogue-tabs {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  /* Three tabs don't fit side by side with their brand names at phone
+     width — stack number over tier and drop the name, which the panel's
+     own heading repeats right below. */
+  .product-catalogue-tab {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 6px;
+    border-radius: 16px;
+    text-align: center;
+  }
+  .product-catalogue-tab-text {
+    align-items: center;
+  }
+  .product-catalogue-tab-name {
+    display: none;
+  }
+  .product-catalogue-tab-tier {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+  .product-catalogue-panel {
+    gap: 26px;
+    padding: 24px 18px;
+    border-radius: 22px;
+  }
+  .product-catalogue-aside {
+    gap: 12px;
+  }
+  .product-catalogue-aside p {
+    font-size: 14px;
+  }
+  .product-catalogue-groups {
+    gap: 26px;
+  }
+  .product-catalogue-group-head h4 {
+    font-size: 18px;
+  }
+  .product-catalogue-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .product-catalogue-item {
+    padding: 12px;
+    gap: 8px;
+    font-size: 13px;
+    border-radius: 12px;
+  }
+}

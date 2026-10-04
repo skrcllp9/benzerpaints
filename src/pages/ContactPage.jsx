@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { submitContactEnquiry } from "../lib/contactEnquiries";
+import { toTelHref, useSiteInfo } from "../hooks/useSiteInfo";
 
 const PhoneIcon = () => (
   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
@@ -32,22 +33,19 @@ const PinIcon = () => (
   </svg>
 );
 
-// Pulled from the footer's contact details (see Footer.jsx) so this page
-// and the footer never drift apart. Address links to the same Google Maps
-// URL already used there.
-const CONTACT_INFO = [
+// Built from the admin-editable site info (same source as the footer).
+const buildContactInfo = (info) => [
   {
     label: "Customer Support",
-    value: "7391074994 (10:00 AM – 5:00 PM)",
-    href: "tel:+917391074994",
+    value: [info.contact_phone, info.contact_phone_note].filter(Boolean).join(" "),
+    href: toTelHref(info.contact_phone),
     icon: <PhoneIcon />,
   },
-  { label: "Email", value: "info@benzerpaints.com", href: "mailto:info@benzerpaints.com", icon: <MailIcon /> },
+  { label: "Email", value: info.contact_email, href: `mailto:${info.contact_email}`, icon: <MailIcon /> },
   {
     label: "Address",
-    value:
-      "First Floor, Office No.1, Survey No. 133/2, Pune Saswad Road, Bhadalewasti, Uruli Devachi, Pune, Maharashtra 412308, India",
-    href: "https://maps.app.goo.gl/DLCfuGjcBzk6KdLr9",
+    value: info.address.split("\n").join(" "),
+    href: info.maps_url,
     icon: <PinIcon />,
   },
 ];
@@ -60,6 +58,7 @@ const ContactPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const headingRef = useRef(null);
+  const contactInfo = buildContactInfo(useSiteInfo());
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -71,7 +70,7 @@ const ContactPage = () => {
       gsap.fromTo(
         headingRef.current,
         { opacity: 0, filter: "blur(14px)", y: 24 },
-        { opacity: 1, filter: "blur(0px)", y: 0, duration: 1, ease: "power3.out", delay: 0.15 }
+        { opacity: 1, filter: "blur(0px)", clearProps: "filter", y: 0, duration: 1, ease: "power3.out", delay: 0.15 }
       );
       gsap.fromTo(
         [".contact-hero-desc", ".contact-form-card", ".contact-info-card"],
@@ -127,7 +126,7 @@ const ContactPage = () => {
       <section className="contact-main">
         <div className="container contact-grid">
           <div className="contact-info-card">
-            {CONTACT_INFO.map((item) => (
+            {contactInfo.map((item) => (
               <a
                 key={item.label}
                 className="contact-info-item"

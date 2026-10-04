@@ -906,3 +906,18 @@ div.admin-table-date {
     font-size: 12px;
   }
 }
+
+/* --- Leaders ------------------------------------------------------------ */
+.admin-leader-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.admin-leader-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}

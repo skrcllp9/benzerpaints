@@ -16,8 +16,8 @@ const HIDE_AFTER = 80;
 // page reload); "#" entries are pages that don't exist yet.
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "#" },
-  { label: "Products", href: "#" },
+  { label: "About Us", href: "/about" },
+  { label: "Products", href: "/products" },
   { label: "Contact Us", href: "/contact" },
   { label: "Blogs", href: "/blogs" },
   { label: "Career", href: "/career" },

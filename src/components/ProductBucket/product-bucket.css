@@ -1,0 +1,10 @@
+/* The script scales its fixed 1080px stage down to whatever box this is, so
+   the host only needs a width and a square aspect ratio. */
+.product-bucket {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: hidden;
+}

@@ -6,6 +6,8 @@ import AdminGuard from './components/AdminGuard/AdminGuard'
 import Homepage from './pages/Homepage'
 import ContactPage from './pages/ContactPage'
 import DealerInquiryPage from './pages/DealerInquiryPage'
+import ProductsPage from './pages/ProductsPage'
+import AboutPage from './pages/AboutPage'
 import BlogsPage from './pages/BlogsPage'
 import BlogInnerPage from './pages/BlogInnerPage'
 import CareerPage from './pages/CareerPage'
@@ -22,6 +24,8 @@ import AdminJobApplicationsPage from './pages/admin/AdminJobApplicationsPage'
 import AdminContactEnquiriesPage from './pages/admin/AdminContactEnquiriesPage'
 import AdminDealerEnquiriesPage from './pages/admin/AdminDealerEnquiriesPage'
 import AdminBrochurePage from './pages/admin/AdminBrochurePage'
+import AdminSiteSettingsPage from './pages/admin/AdminSiteSettingsPage'
+import AdminLeadersPage from './pages/admin/AdminLeadersPage'
 
 // The marketing chrome (fixed header, Lenis-driven footer) only wraps the
 // public site — the admin panel is a plain dashboard with its own layout.
@@ -43,6 +47,8 @@ function App() {
             <Route path="/" element={<Homepage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/dealer-inquiry" element={<DealerInquiryPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/products" element={<ProductsPage />} />
             <Route path="/blogs" element={<BlogsPage />} />
             <Route path="/blogs/:slug" element={<BlogInnerPage />} />
             <Route path="/career" element={<CareerPage />} />
@@ -64,6 +70,8 @@ function App() {
               <Route path="contact-enquiries" element={<AdminContactEnquiriesPage />} />
               <Route path="dealer-enquiries" element={<AdminDealerEnquiriesPage />} />
               <Route path="brochure" element={<AdminBrochurePage />} />
+              <Route path="site-settings" element={<AdminSiteSettingsPage />} />
+              <Route path="leaders" element={<AdminLeadersPage />} />
             </Route>
           </Route>
         </Routes>

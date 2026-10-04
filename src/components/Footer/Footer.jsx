@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useBrochureUrl } from "../../hooks/useBrochureUrl";
+import { toTelHref, useSiteInfo } from "../../hooks/useSiteInfo";
 import "./footer.css";
 
 const HeartIcon = () => (
@@ -55,9 +56,9 @@ const LinkedinIcon = () => (
 );
 
 const SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "#", Icon: LinkedinIcon },
-  { label: "Instagram", href: "#", Icon: InstagramIcon },
-  { label: "Facebook", href: "#", Icon: FacebookIcon },
+  { label: "LinkedIn", key: "social_linkedin", Icon: LinkedinIcon },
+  { label: "Instagram", key: "social_instagram", Icon: InstagramIcon },
+  { label: "Facebook", key: "social_facebook", Icon: FacebookIcon },
 ];
 
 // href starting with "/" is a real route (rendered via <Link>, no full
@@ -74,6 +75,8 @@ const FOOTER_LINKS = [
 const Footer = () => {
   const year = new Date().getFullYear();
   const brochureUrl = useBrochureUrl();
+  const info = useSiteInfo();
+  const addressLines = info.address.split("\n");
 
   return (
     <footer className="site-footer">
@@ -116,21 +119,21 @@ const Footer = () => {
           </nav>
 
           <div className="site-footer-contact">
-            <a href="mailto:info@benzerpaints.com">info@benzerpaints.com</a>
-            <a href="tel:+917391074994">7391074994</a>
-            <a
-              href="https://maps.app.goo.gl/DLCfuGjcBzk6KdLr9"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              First Floor, Office No.1, Survey No. 133/2, Pune Saswad Road,<br />
-              Bhadalewasti, Uruli Devachi, Pune, Maharashtra 412308, India
+            <a href={`mailto:${info.contact_email}`}>{info.contact_email}</a>
+            <a href={toTelHref(info.contact_phone)}>{info.contact_phone}</a>
+            <a href={info.maps_url} target="_blank" rel="noopener noreferrer">
+              {addressLines.map((line, i) => (
+                <span key={i}>
+                  {i > 0 && <br />}
+                  {line}
+                </span>
+              ))}
             </a>
           </div>
 
           <div className="site-footer-social">
-            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-              <a key={label} href={href} aria-label={label} target="_blank" rel="noopener noreferrer">
+            {SOCIAL_LINKS.filter(({ key }) => info[key]).map(({ label, key, Icon }) => (
+              <a key={label} href={info[key]} aria-label={label} target="_blank" rel="noopener noreferrer">
                 <Icon />
               </a>
             ))}

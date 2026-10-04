@@ -46,7 +46,7 @@ const BlogsPage = () => {
           { opacity: 0, filter: "blur(14px)", y: 24 },
           {
             opacity: 1,
-            filter: "blur(0px)",
+            filter: "blur(0px)", clearProps: "filter",
             y: 0,
             duration: 1.1,
             ease: "power3.out",

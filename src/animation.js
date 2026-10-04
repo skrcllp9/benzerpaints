@@ -4,6 +4,10 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Safari (esp. iOS) resizes the viewport as its toolbars slide away; without
+// this ScrollTrigger recalculates every trigger on each of those resizes.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 const lenis = new Lenis();
 
 lenis.on("scroll", ScrollTrigger.update);
@@ -23,5 +27,11 @@ gsap.ticker.add((time) => {
   lenis.raf(time * 1000);
 });
 gsap.ticker.lagSmoothing(0);
+
+// Trigger positions are measured against layout that shifts once web fonts
+// and images arrive (Safari is slower at both), so re-measure afterwards —
+// otherwise reveal triggers can sit at stale positions.
+window.addEventListener("load", () => ScrollTrigger.refresh());
+document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
 export default lenis;

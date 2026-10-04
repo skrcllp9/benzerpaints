@@ -1014,6 +1014,7 @@
   border-radius: 16px;
   overflow: hidden;
   line-height: 0;
+  isolation: isolate;
 }
 .contact-info-map iframe {
   display: block;
@@ -1910,6 +1911,7 @@
   overflow: hidden;
   background: #fff;
   transition: border-color 0.3s ease;
+  isolation: isolate;
 }
 .dealer-field .phone-input-wrap:focus-within {
   border-color: var(--blue);
@@ -2093,6 +2095,7 @@
   overflow: hidden;
   text-decoration: none;
   box-shadow: 0 24px 60px rgba(25, 37, 67, 0.08);
+  isolation: isolate;
 }
 .blogs-featured-badge {
   position: absolute;
@@ -2184,6 +2187,7 @@
   overflow: hidden;
   box-shadow: 0 12px 30px rgba(25, 37, 67, 0.06);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
+  isolation: isolate;
 }
 .blog-card:hover {
   transform: translateY(-6px);
@@ -2805,4 +2809,382 @@
 }
 .admin-sidebar-logo-text{
   color: #fff;
+}
+/* Products page */
+.products-showcase {
+  padding-bottom: 110px;
+}
+.products-showcase-desc {
+  max-width: 640px;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 8px;
+}
+.products-featured {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  background-color: var(--beige);
+  border-radius: 28px;
+  padding: 40px 60px;
+}
+.products-featured-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.products-featured-media {
+  min-width: 0;
+}
+/* Every other panel mirrors (copy left, bucket right). Desktop/tablet only
+   — the single-column mobile layout always leads with the bucket. */
+@media screen and (min-width: 768px) {
+  .products-featured:nth-child(even) .products-featured-media {
+    order: 2;
+  }
+}
+.products-featured-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.products-featured-tag {
+  font-family: var(--inter);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  line-height: 100%;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+}
+.products-featured-content h3 {
+  font-size: clamp(26px, 3.2vw, 42px);
+  line-height: 105%;
+  letter-spacing: -0.02em;
+}
+.products-featured-content p {
+  font-family: var(--inter);
+  font-size: 16px;
+  line-height: 150%;
+  max-width: 460px;
+}
+.products-featured-points {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  width: 100%;
+  max-width: 520px;
+}
+.products-featured-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: var(--inter);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 135%;
+  color: var(--text-brown);
+}
+.products-featured-points svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--accent-green);
+}
+.products-range {
+  padding-bottom: 110px;
+}
+.products-range-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+}
+.products-range-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.products-range-card-media {
+  aspect-ratio: 4 / 5;
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: var(--beige);
+  isolation: isolate;
+}
+.products-range-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.products-range-card:hover .products-range-card-media img {
+  transform: scale(1.05);
+}
+.products-range-card-title {
+  font-family: var(--brico);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 120%;
+  color: var(--head-black);
+}
+.products-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 50px;
+}
+/* Outlined twin of .primary-btn. Scoped to :not(:hover) so the base
+   button's own gradient-text hover state still wins on hover. */
+.primary-btn.products-cta-outline:not(:hover) {
+  background-color: transparent;
+  color: var(--head-black);
+}
+.products-range-nav {
+  display: none;
+}
+@media screen and (max-width: 1200px) {
+  .products-featured {
+    padding: 36px 40px;
+    gap: 30px;
+  }
+  /* Grid becomes a scroll-snap slider: 3 cards in view, then 2, then 1. */
+  .products-range-grid {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .products-range-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .products-range-card {
+    flex: 0 0 calc((100% - 40px) / 3);
+    scroll-snap-align: start;
+  }
+  .products-range-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .products-range-arrow {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--blue);
+    background: transparent;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease all;
+  }
+  @media (hover: hover) {
+    .products-range-arrow:hover:not(:disabled) {
+      background: var(--blue);
+      color: #fff;
+    }
+  }
+  .products-range-arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+@media screen and (max-width: 991px) {
+  .products-showcase {
+    padding-bottom: 90px;
+  }
+  .products-range {
+    padding-bottom: 90px;
+  }
+  .products-range-card {
+    flex-basis: calc((100% - 20px) / 2);
+  }
+  .products-featured {
+    padding: 30px;
+  }
+  .products-featured-points {
+    grid-template-columns: 1fr;
+  }
+  .products-featured-points li {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .products-showcase {
+    padding-bottom: 70px;
+  }
+  .products-showcase-desc {
+    font-size: 14px;
+  }
+  .products-featured {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px 20px 30px;
+    border-radius: 22px;
+  }
+  .products-featured-list {
+    gap: 20px;
+  }
+  .products-featured-media .product-bucket {
+    max-width: 340px;
+  }
+  .products-featured-content {
+    gap: 14px;
+  }
+  .products-featured-content p {
+    font-size: 14px;
+  }
+  .products-range-grid {
+    gap: 14px;
+  }
+  .products-range-card {
+    flex-basis: 100%;
+  }
+  .products-range {
+    padding-bottom: 70px;
+  }
+  .products-range-card-media {
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+  }
+  .products-range-card-title {
+    font-size: 15px;
+  }
+  .products-cta-row {
+    margin-top: 34px;
+    gap: 10px;
+  }
+}
+
+/* About page */
+.about-intro,
+.about-vision,
+.about-leaders {
+  padding-bottom: 100px;
+}
+.heading p.about-copy,
+.about-copy {
+  max-width: none;
+  width: 100%;
+  margin: 14px auto 0;
+  text-align: center;
+}
+.about-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+.about-pillar {
+  background-color: var(--beige);
+  border-radius: 24px;
+  padding: 32px 28px;
+}
+.about-pillar-num {
+  font-family: var(--brico);
+  font-size: 14px;
+  color: var(--accent-orange);
+}
+.about-pillar h3 {
+  margin: 10px 0 8px;
+}
+.about-pillar p {
+  font-size: 15px;
+  line-height: 150%;
+}
+.about-leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+  text-align: center;
+}
+.about-leader-photo {
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  background-color: var(--beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--brico);
+  font-size: 56px;
+  color: var(--blue);
+  margin-bottom: 18px;
+  isolation: isolate;
+}
+.about-leader h3 {
+  margin: 0 0 4px;
+}
+.about-leader span {
+  font-family: var(--inter);
+  font-size: 15px;
+  color: var(--text-brown);
+}
+.about-join {
+  padding-bottom: 110px;
+}
+.about-join-card {
+  background-color: var(--blue);
+  border-radius: 28px;
+  padding: 70px 30px;
+  text-align: center;
+  color: #fff;
+}
+.about-join-card h2,
+.about-join-card .about-copy,
+.about-join-card .eyebrow-head {
+  color: #fff;
+}
+.about-join-card .about-copy {
+  margin-bottom: 30px;
+}
+@media (max-width: 767px) {
+  .about-intro,
+  .about-vision,
+  .about-leaders {
+    padding-bottom: 70px;
+  }
+  .about-pillars,
+  .about-leaders-grid {
+    grid-template-columns: 1fr;
+    margin-top: 32px;
+  }
+  .about-leader-photo {
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .about-join {
+    padding-bottom: 70px;
+  }
+  .about-join-card {
+    padding: 50px 20px;
+  }
+}
+.about-join-btn:not(:hover) {
+  border-color: #fff;
+}
+
+.about-leader-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Safari / iOS: focusing a form control with a font-size under 16px makes
+   Safari zoom the page in and never zoom back out. */
+@media (hover: none) and (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }

@@ -105,7 +105,7 @@ const DealerInquiryPage = () => {
       gsap.fromTo(
         headingRef.current,
         { opacity: 0, filter: "blur(14px)", y: 24 },
-        { opacity: 1, filter: "blur(0px)", y: 0, duration: 1, ease: "power3.out", delay: 0.15 }
+        { opacity: 1, filter: "blur(0px)", clearProps: "filter", y: 0, duration: 1, ease: "power3.out", delay: 0.15 }
       );
       gsap.fromTo(
         ".dealer-form-desc, .dealer-field, .dealer-submit, .dealer-form-note, .dealer-info-heading, .dealer-info-desc, .dealer-info-feature",

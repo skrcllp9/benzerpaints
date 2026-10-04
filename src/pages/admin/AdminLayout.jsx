@@ -49,6 +49,20 @@ const BrochureIcon = () => (
   </svg>
 );
 
+const SettingsIcon = () => (
+  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M18 6l-1.6 1.6M7.6 16.4 6 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  </svg>
+);
+const LeadersIcon = () => (
+  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
+    <circle cx="9" cy="8.5" r="3.2" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M3.5 19c.5-3.2 2.7-5 5.5-5s5 1.8 5.5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    <path d="M16 6.2a3 3 0 0 1 0 5.6M18 14.3c1.5.6 2.4 2 2.7 4.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  </svg>
+);
+
 const NAV_LINKS = [
   { to: "/admin", label: "Dashboard", icon: <DashboardIcon />, end: true },
   { to: "/admin/blogs", label: "Blogs", icon: <BlogIcon /> },
@@ -57,6 +71,8 @@ const NAV_LINKS = [
   { to: "/admin/contact-enquiries", label: "Contact Enquiries", icon: <MailIcon /> },
   { to: "/admin/dealer-enquiries", label: "Dealer Enquiries", icon: <DealerIcon /> },
   { to: "/admin/brochure", label: "Brochure", icon: <BrochureIcon /> },
+  { to: "/admin/leaders", label: "Leaders", icon: <LeadersIcon /> },
+  { to: "/admin/site-settings", label: "Site Settings", icon: <SettingsIcon /> },
 ];
 
 const AdminLayout = () => {
