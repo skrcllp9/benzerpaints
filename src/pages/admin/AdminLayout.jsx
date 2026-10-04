@@ -129,6 +129,11 @@ const AdminLayout = () => {
       </aside>
 
       <main className="admin-main">
+        <div className="admin-main-bar">
+          <a href="/" target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-ghost">
+            Go to Website
+          </a>
+        </div>
         <Outlet />
       </main>
     </div>

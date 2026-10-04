@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import ImageCropModal from "../../components/ImageCropModal/ImageCropModal";
 import { createLeader, fetchLeaders, updateLeader, uploadLeaderImage } from "../../lib/leaders";
 import "./admin.css";
 
@@ -11,6 +12,7 @@ const AdminLeadersPage = () => {
   const [editing, setEditing] = useState(null); // slot index being edited
   const [form, setForm] = useState({ name: "", role: "", image_url: "" });
   const [file, setFile] = useState(null);
+  const [cropSource, setCropSource] = useState(null); // picked file awaiting crop
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState(null);
   const fileRef = useRef(null);
@@ -25,9 +27,9 @@ const AdminLeadersPage = () => {
     load();
   }, []);
 
-  // Live preview of a freshly chosen photo, released when it changes.
+  // Live preview of a freshly chosen photo (not revoked on cleanup — React's
+  // dev-mode effect double-run would kill it before it paints).
   const preview = useMemo(() => (file ? URL.createObjectURL(file) : ""), [file]);
-  useEffect(() => () => preview && URL.revokeObjectURL(preview), [preview]);
 
   const slots = Array.from({ length: SLOT_COUNT }, (_, i) => leaders[i] || null);
 
@@ -45,6 +47,13 @@ const AdminLeadersPage = () => {
     if (fileRef.current) fileRef.current.value = "";
   };
 
+  // Clears both a freshly chosen file and the saved photo; takes effect on Save.
+  const removePhoto = () => {
+    setFile(null);
+    if (fileRef.current) fileRef.current.value = "";
+    setForm((p) => ({ ...p, image_url: "" }));
+  };
+
   const handleFile = (e) => {
     const picked = e.target.files?.[0];
     if (picked && !picked.type.startsWith("image/")) {
@@ -52,7 +61,17 @@ const AdminLeadersPage = () => {
       e.target.value = "";
       return;
     }
-    setFile(picked || null);
+    if (picked) setCropSource(picked);
+  };
+
+  const finishCrop = (cropped) => {
+    setFile(cropped);
+    setCropSource(null);
+  };
+
+  const cancelCrop = () => {
+    setCropSource(null);
+    if (fileRef.current) fileRef.current.value = "";
   };
 
   const handleSave = async (e) => {
@@ -86,6 +105,15 @@ const AdminLeadersPage = () => {
         </div>
       </div>
 
+      {cropSource && (
+        <ImageCropModal
+          file={cropSource}
+          aspect={1}
+          onConfirm={finishCrop}
+          onCancel={cancelCrop}
+        />
+      )}
+
       {notice && <p className={`admin-alert admin-alert-${notice.type}`}>{notice.message}</p>}
 
       <div className="admin-leader-grid">
@@ -105,6 +133,11 @@ const AdminLeadersPage = () => {
                   onChange={handleFile}
                 />
                 <span className="admin-field-hint">Square or portrait photos look best.</span>
+                {(preview || form.image_url) && (
+                  <button type="button" className="admin-link-danger" onClick={removePhoto}>
+                    Remove photo
+                  </button>
+                )}
               </div>
               <div className="admin-field">
                 <label htmlFor={`leader-name-${i}`}>Name</label>

@@ -1012,3 +1012,26 @@ div.admin-table-date {
   border-color: var(--blue);
   color: #fff;
 }
+
+/* Plain text-style action, e.g. "Remove photo" */
+.admin-link-danger {
+  align-self: flex-start;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--inter);
+  font-size: 13px;
+  color: #c0392b;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.admin-link-danger:hover {
+  opacity: 0.75;
+}
+
+/* Top-right strip above each admin page */
+.admin-main-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin: -8px 0 12px;
+}
