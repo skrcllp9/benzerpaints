@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import { DEFAULT_SITE_INFO, fetchSiteInfo } from "../lib/settings";
 
-// Footer address, contact details and social links — editable from
+// Address, phone numbers, email (and social links for the footer) for one
+// place on the site — "footer" or "contact" — editable from
 // /admin/site-settings. Starts from the built-in defaults so the page is
 // complete on first paint, then swaps in the stored values.
-export const useSiteInfo = () => {
-  const [info, setInfo] = useState(DEFAULT_SITE_INFO);
+export const useSiteInfo = (section) => {
+  const [info, setInfo] = useState(DEFAULT_SITE_INFO[section]);
 
   useEffect(() => {
     let active = true;
     fetchSiteInfo()
       .then((value) => {
-        if (active) setInfo(value);
+        if (active) setInfo(value[section]);
       })
       .catch(() => {});
     return () => {
       active = false;
     };
-  }, []);
+  }, [section]);
 
   return info;
 };

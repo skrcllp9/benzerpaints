@@ -35,17 +35,17 @@ const PinIcon = () => (
 
 // Built from the admin-editable site info (same source as the footer).
 const buildContactInfo = (info) => [
-  {
-    label: "Customer Support",
-    value: [info.contact_phone, info.contact_phone_note].filter(Boolean).join(" "),
-    href: toTelHref(info.contact_phone),
+  ...info.phones.map((phone) => ({
+    label: phone.label || "Phone",
+    value: [phone.number, phone.note].filter(Boolean).join(" "),
+    href: toTelHref(phone.number),
     icon: <PhoneIcon />,
-  },
-  { label: "Email", value: info.contact_email, href: `mailto:${info.contact_email}`, icon: <MailIcon /> },
+  })),
+  { label: "Email", value: info.email, href: `mailto:${info.email}`, icon: <MailIcon /> },
   {
     label: "Address",
     value: info.address.split("\n").join(" "),
-    href: info.maps_url,
+    href: info.maps_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(info.address.replace(/\n/g, " "))}`,
     icon: <PinIcon />,
   },
 ];
@@ -58,7 +58,7 @@ const ContactPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const headingRef = useRef(null);
-  const contactInfo = buildContactInfo(useSiteInfo());
+  const contactInfo = buildContactInfo(useSiteInfo("contact"));
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -128,7 +128,7 @@ const ContactPage = () => {
           <div className="contact-info-card">
             {contactInfo.map((item) => (
               <a
-                key={item.label}
+                key={`${item.label}-${item.href}`}
                 className="contact-info-item"
                 href={item.href}
                 target={item.label === "Address" ? "_blank" : undefined}

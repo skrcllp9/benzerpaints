@@ -3174,9 +3174,11 @@
 }
 
 .about-leader-photo img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 /* Safari / iOS: focusing a form control with a font-size under 16px makes
