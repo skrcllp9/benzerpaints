@@ -29,10 +29,20 @@ const DEFAULT_LEADERS = [
   { id: "d1", name: "Mr. Vijay Gupta", role: "Managing Director", image_url: "" },
   { id: "d2", name: "Mr. Diwakar Singhal", role: "Director", image_url: "" },
   { id: "d3", name: "Mr. Shubham Gupta", role: "Director", image_url: "" },
+  { id: "d4", name: "Mrs. Pushpa Gupta", role: "Director", image_url: "" },
+  { id: "d5", name: "Miss Shikha Gupta", role: "Director", image_url: "" },
 ];
+
+const arrowIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 5l7 7-7 7" />
+  </svg>
+);
 
 const AboutPage = () => {
   const rootRef = useRef(null);
+  const sliderRef = useRef(null);
+  const [edge, setEdge] = useState({ start: true, end: false });
   // Managed from /admin/leaders; falls back to the defaults above while the
   // table is empty or unreachable.
   const [leaders, setLeaders] = useState(DEFAULT_LEADERS);
@@ -40,7 +50,8 @@ const AboutPage = () => {
   useEffect(() => {
     fetchLeaders()
       .then((rows) => {
-        if (rows.length > 0) setLeaders(rows);
+        // Slots the table doesn't have yet keep their default entry.
+        if (rows.length > 0) setLeaders([...rows, ...DEFAULT_LEADERS.slice(rows.length)]);
       })
       .catch(() => {});
   }, []);
@@ -154,6 +165,25 @@ const AboutPage = () => {
 
   // Cards get their own effect because the list can be swapped for the
   // admin-managed one after the first render.
+  // Tracks the slider's scroll position so the arrows disable at either end.
+  const updateEdge = () => {
+    const el = sliderRef.current;
+    if (!el) return;
+    setEdge({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 });
+  };
+  const slide = (dir) => {
+    const el = sliderRef.current;
+    const card = el?.firstElementChild;
+    if (!card) return;
+    el.scrollBy({ left: dir * (card.offsetWidth + 16), behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    updateEdge();
+    window.addEventListener("resize", updateEdge);
+    return () => window.removeEventListener("resize", updateEdge);
+  }, [leaders]);
+
   useEffect(() => {
     if (leaders.length === 0) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -248,7 +278,7 @@ const AboutPage = () => {
             </p>
             <h2>Our Leaders</h2>
           </div>
-          <div className="about-leaders-grid">
+          <div className="about-leaders-grid" ref={sliderRef} onScroll={updateEdge}>
             {leaders.map((leader) => (
               <div className="about-leader" key={leader.id}>
                 <div className="about-leader-photo">
@@ -258,6 +288,14 @@ const AboutPage = () => {
                 <span>{leader.role}</span>
               </div>
             ))}
+          </div>
+          <div className="about-leaders-nav">
+            <button type="button" className="about-leaders-btn is-prev" onClick={() => slide(-1)} disabled={edge.start} aria-label="Previous leader">
+              {arrowIcon}
+            </button>
+            <button type="button" className="about-leaders-btn" onClick={() => slide(1)} disabled={edge.end} aria-label="Next leader">
+              {arrowIcon}
+            </button>
           </div>
         </div>
       </section>

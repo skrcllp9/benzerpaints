@@ -3,7 +3,7 @@ import ImageCropModal from "../../components/ImageCropModal/ImageCropModal";
 import { createLeader, fetchLeaders, updateLeader, uploadLeaderImage } from "../../lib/leaders";
 import "./admin.css";
 
-const SLOT_COUNT = 3;
+const SLOT_COUNT = 5;
 const PLACEHOLDER_IMAGE = "/images/leader-placeholder.svg";
 
 const AdminLeadersPage = () => {
@@ -101,7 +101,7 @@ const AdminLeadersPage = () => {
       <div className="admin-page-header">
         <div>
           <h1>Leaders</h1>
-          <p>The three people shown under "Our Leaders" on the About page. Click a card to edit it.</p>
+          <p>The five people shown under "Our Leaders" on the About page. Click a card to edit it.</p>
         </div>
       </div>
 

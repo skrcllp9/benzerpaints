@@ -54,7 +54,9 @@ select name, role, sort_order
 from (values
   ('Mr. Vijay Gupta', 'Managing Director', 1),
   ('Mr. Diwakar Singhal', 'Director', 2),
-  ('Mr. Shubham Gupta', 'Director', 3)
+  ('Mr. Shubham Gupta', 'Director', 3),
+  ('Mrs. Pushpa Gupta', 'Director', 4),
+  ('Miss Shikha Gupta', 'Director', 5)
 ) as seed(name, role, sort_order)
 where not exists (select 1 from public.leaders);
 

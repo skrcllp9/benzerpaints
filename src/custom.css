@@ -3100,8 +3100,8 @@
 }
 .about-leaders-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
   margin-top: 48px;
   text-align: center;
 }
@@ -3128,6 +3128,64 @@
   font-size: 15px;
   color: var(--text-brown);
 }
+.about-leaders-nav {
+  display: none;
+}
+.about-leaders-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid var(--blue);
+  background: transparent;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+.about-leaders-btn.is-prev svg {
+  transform: rotate(180deg);
+}
+.about-leaders-btn:not(:disabled):hover {
+  background-color: var(--blue);
+  color: #fff;
+}
+.about-leaders-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+/* Below desktop the five leaders become a swipeable slider. */
+@media (max-width: 1023px) {
+  .about-leaders-grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 40px) / 3.3);
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .about-leaders-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .about-leader {
+    scroll-snap-align: start;
+  }
+  .about-leaders-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+}
+@media (max-width: 767px) {
+  .about-leaders-grid {
+    grid-auto-columns: calc((100% - 16px) / 1.3);
+  }
+}
 .about-join {
   padding-bottom: 110px;
 }
@@ -3152,15 +3210,12 @@
   .about-leaders {
     padding-bottom: 70px;
   }
-  .about-pillars,
-  .about-leaders-grid {
+  .about-pillars {
     grid-template-columns: 1fr;
     margin-top: 32px;
   }
-  .about-leader-photo {
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
+  .about-leaders-grid {
+    margin-top: 32px;
   }
   .about-join {
     padding-bottom: 70px;
