@@ -910,7 +910,7 @@ div.admin-table-date {
 /* --- Leaders ------------------------------------------------------------ */
 .admin-leader-grid {
   display: grid;
-  grid-template-columns: repeat(5, 250px);
+  grid-template-columns: repeat(auto-fill, 250px);
   gap: 20px;
   align-items: start;
 }
